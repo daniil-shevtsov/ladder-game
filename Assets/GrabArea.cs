@@ -18,7 +18,7 @@ public class GrabArea : MonoBehaviour
         
     }
 
-     void OnCollisionEnter(Collider collider) {
+     void OnCollisionEnter(Collision collider) {
         Debug.Log("COLLISION");
         if(!itemsInArea.Contains(collider.gameObject.GetComponent<Item>())) {
             itemsInArea.Add(collider.gameObject.GetComponent<Item>());
@@ -26,7 +26,7 @@ public class GrabArea : MonoBehaviour
         }
      }
 
-    void OnCollisionExit(Collider collider) {
+    void OnCollisionExit(Collision collider) {
         if(itemsInArea.Contains(collider.gameObject.GetComponent<Item>())) {
             itemsInArea.Remove(collider.gameObject.GetComponent<Item>());
         }
