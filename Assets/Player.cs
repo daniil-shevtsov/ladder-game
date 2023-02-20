@@ -9,10 +9,12 @@ public class Player : MonoBehaviour
     public InputAction grabAction;
     public Camera cc;
     private Item grabbedItem;
+    private GrabArea grabArea;
 
     // Start is called before the first frame update
     void Start()
     {
+        grabArea = GetComponent<GrabArea>();
         grabAction.Enable();
     }
 
@@ -39,12 +41,9 @@ public class Player : MonoBehaviour
     }
 
     Item GrabItem() {
-        RaycastHit hit;
-        if (Physics.Raycast(cc.transform.position, cc.transform.forward, out hit, 1000)) //here we go agian we shoot raycast in camera position then raycast will appear forward direction when hit something collide with the shooting range 
-        {
-            
-            return hit.transform.GetComponent<Item>();
+        if(grabArea.itemsInArea.Count == 0) {
+            return null;
         }
-        return null;
+        return grabArea.itemsInArea[0];
     }
 }
