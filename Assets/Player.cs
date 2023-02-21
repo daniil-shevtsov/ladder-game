@@ -88,6 +88,20 @@ public class Player : MonoBehaviour
             Vector3 newPosition = transform.position + new Vector3(1.5f, 1.5f, 1.5f);
 
             heldObject.transform.position = newPosition;
+
+            Vector3 distance = Input.mousePosition - heldObject.transform.position;
+            Quaternion rotation = Quaternion.LookRotation(distance, Vector3.up);
+            //heldObject.transform.rotation = Quaternion.Euler(0, rotation.y, 0);
+            //Debug.Log($"Mouse pos: {Input.mousePosition}");
+
+            float sensitivityX = 0.5f;
+            float sensitivityY = sensitivityX;
+            heldObject
+                .GetComponent<Rigidbody>()
+                .transform.Rotate(Vector3.right * sensitivityX * Time.deltaTime, rotation.y);
+            heldObject
+                .GetComponent<Rigidbody>()
+                .transform.Rotate(Vector3.up * sensitivityY * Time.deltaTime, rotation.x);
         }
     }
 
@@ -95,6 +109,6 @@ public class Player : MonoBehaviour
     {
         Rigidbody body = gameObject.GetComponent<Rigidbody>();
         body.isKinematic = !isEnabled;
-        body.freezeRotation = !isEnabled;
+        //body.freezeRotation = !isEnabled;
     }
 }
