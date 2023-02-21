@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     public InputAction climbAction;
     public Camera cc;
 
-    public float climbingSpeed;
+    public float climbingSpeed = 3;
 
     private Item grabbedItem;
     private GrabArea grabArea;
@@ -20,14 +20,14 @@ public class Player : MonoBehaviour
     private Vector3 handPositionOffset;
 
     private Ladder nearLadder;
-    private ThirdPersonController characterController;
+    private MyThirdPersonController characterController;
     private PlayerState currentState = PlayerState.Idle;
 
     // Start is called before the first frame update
     void Start()
     {
         grabArea = GetComponent<GrabArea>();
-        characterController = GetComponent<ThirdPersonController>();
+        characterController = GetComponent<MyThirdPersonController>();
 
         handPositionOffset = new Vector3(1.5f, 1.5f, 1.5f);
         grabAction.Enable();
@@ -45,6 +45,7 @@ public class Player : MonoBehaviour
 
         if (climbAction.triggered)
         {
+            Debug.Log("Climb clicked");
             if (currentState == PlayerState.Climbing)
             {
                 StopClimbing();
@@ -98,15 +99,14 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Start climbing");
         // characterController.enabled = false;
-        characterController.Gravity = 0f;
-
+        characterController.isGravityEnabled = false;
         currentState = PlayerState.Climbing;
     }
 
     void StopClimbing()
     {
-        //characterController.enabled = true;
-
+        Debug.Log("Stop climbing");
+        characterController.isGravityEnabled = true;
         currentState = PlayerState.Idle;
     }
 
