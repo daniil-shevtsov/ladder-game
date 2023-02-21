@@ -119,6 +119,7 @@ public class Player : MonoBehaviour
             Vector3 handPosition = transform.position + direction * 3.5f;
 
             heldObject.transform.position = handPosition;
+            heldObject.transform.rotation = Quaternion.LookRotation(transform.forward);
 
             //RotateAsPlayer(heldObject);
         }
