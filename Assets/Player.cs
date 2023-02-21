@@ -78,6 +78,22 @@ public class Player : MonoBehaviour
         grabbedItem = null;
     }
 
+    void RotateByMouse(GameObject gameObject)
+    {
+        Vector3 distance = Input.mousePosition - gameObject.transform.position;
+        Quaternion rotation = Quaternion.LookRotation(distance, Vector3.up);
+
+        Vector3 mouseScreenPosition = new Vector3(
+            Input.mousePosition.x,
+            Input.mousePosition.y,
+            -Camera.main.transform.position.z
+        );
+
+        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
+
+        gameObject.transform.LookAt(mouseWorldPosition, Vector3.up);
+    }
+
     void UpdateGrabbedItem()
     {
         if (grabbedItem != null)
@@ -89,18 +105,7 @@ public class Player : MonoBehaviour
 
             heldObject.transform.position = newPosition;
 
-            Vector3 distance = Input.mousePosition - heldObject.transform.position;
-            Quaternion rotation = Quaternion.LookRotation(distance, Vector3.up);
-
-            Vector3 mouseScreenPosition = new Vector3(
-                Input.mousePosition.x,
-                Input.mousePosition.y,
-                -Camera.main.transform.position.z
-            );
-
-            Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
-
-            heldObject.transform.LookAt(mouseWorldPosition, Vector3.up);
+            RotateByMouse(heldObject);
         }
     }
 
