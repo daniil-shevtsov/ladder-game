@@ -1,3 +1,4 @@
+using System.Transactions;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,11 +13,13 @@ public class Player : MonoBehaviour
     private Item grabbedItem;
     private GrabArea grabArea;
     private GameObject heldObject;
+    private Vector3 handPositionOffset;
 
     // Start is called before the first frame update
     void Start()
     {
         grabArea = GetComponent<GrabArea>();
+        handPositionOffset = new Vector3(1.5f, 1.5f, 1.5f);
         grabAction.Enable();
     }
 
@@ -78,6 +81,14 @@ public class Player : MonoBehaviour
         grabbedItem = null;
     }
 
+    void RotateAsPlayer(GameObject gameObject)
+    {
+        Vector3 handPosition = transform.position + handPositionOffset;
+        Quaternion rotation = Quaternion.LookRotation(transform.position - handPosition);
+
+        gameObject.transform.rotation = transform.rotation;
+    }
+
     void RotateByMouse(GameObject gameObject)
     {
         Vector3 distance = Input.mousePosition - gameObject.transform.position;
@@ -99,13 +110,17 @@ public class Player : MonoBehaviour
         if (grabbedItem != null)
         {
             GameObject heldObject = grabbedItem.gameObject;
-            Vector3 direction = (transform.position - heldObject.transform.position).normalized;
-            //Vector3 newPosition = transform.position + 0.5f * direction;
-            Vector3 newPosition = transform.position + new Vector3(1.5f, 1.5f, 1.5f);
+            //Vector3 direction = (transform.position - heldObject.transform.position).normalized;
+            Vector3 direction = transform.forward.normalized;
+            float distance = Vector3.Distance(
+                transform.position,
+                transform.position + handPositionOffset
+            );
+            Vector3 handPosition = transform.position + direction * 3.5f;
 
-            heldObject.transform.position = newPosition;
+            heldObject.transform.position = handPosition;
 
-            RotateByMouse(heldObject);
+            //RotateAsPlayer(heldObject);
         }
     }
 
