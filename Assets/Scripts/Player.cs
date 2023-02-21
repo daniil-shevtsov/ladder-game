@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using StarterAssets;
 
 public class Player : MonoBehaviour
 {
@@ -19,14 +20,14 @@ public class Player : MonoBehaviour
     private Vector3 handPositionOffset;
 
     private Ladder nearLadder;
-    private CharacterController characterController;
-    private bool isClimbing = false;
+    private ThirdPersonController characterController;
+    private PlayerState currentState = PlayerState.Idle;
 
     // Start is called before the first frame update
     void Start()
     {
         grabArea = GetComponent<GrabArea>();
-        characterController = GetComponent<CharacterController>();
+        characterController = GetComponent<ThirdPersonController>();
 
         handPositionOffset = new Vector3(1.5f, 1.5f, 1.5f);
         grabAction.Enable();
@@ -44,30 +45,31 @@ public class Player : MonoBehaviour
 
         if (climbAction.triggered)
         {
-            StartClimbing();
+            if (currentState == PlayerState.Climbing)
+            {
+                StopClimbing();
+            }
+            else if (currentState == PlayerState.Idle)
+            {
+                StartClimbing();
+            }
         }
 
         UpdateGrabbedItem();
 
-        if (nearLadder != null && isClimbing)
+        if (nearLadder != null && currentState == PlayerState.Climbing)
         {
             if (Input.GetKey(KeyCode.O))
             {
-                characterController.enabled = false;
                 Debug.Log("Climb up");
                 //characterController.Move(new Vector3(0, 1, 0) * Time.deltaTime * climbingSpeed);
                 transform.Translate(new Vector3(0, 1, 0) * Time.deltaTime * climbingSpeed);
             }
             else if (Input.GetKey(KeyCode.P))
             {
-                characterController.enabled = false;
                 Debug.Log("Climb down");
                 //characterController.Move(new Vector3(0, -1, 0) * Time.deltaTime * climbingSpeed);
                 transform.Translate(new Vector3(0, -1, 0) * Time.deltaTime * climbingSpeed);
-            }
-            else
-            {
-                characterController.enabled = true;
             }
         }
     }
@@ -95,7 +97,17 @@ public class Player : MonoBehaviour
     void StartClimbing()
     {
         Debug.Log("Start climbing");
-        isClimbing = true;
+        // characterController.enabled = false;
+        characterController.Gravity = 0f;
+
+        currentState = PlayerState.Climbing;
+    }
+
+    void StopClimbing()
+    {
+        //characterController.enabled = true;
+
+        currentState = PlayerState.Idle;
     }
 
     void ToggleGrab()
@@ -193,5 +205,11 @@ public class Player : MonoBehaviour
         Rigidbody body = gameObject.GetComponent<Rigidbody>();
         body.isKinematic = !isEnabled;
         //body.freezeRotation = !isEnabled;
+    }
+
+    enum PlayerState
+    {
+        Idle,
+        Climbing,
     }
 }
