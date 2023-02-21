@@ -11,7 +11,6 @@ public class Player : MonoBehaviour
     private Item grabbedItem;
     private GrabArea grabArea;
     private GameObject heldObject;
-    private Vector3 objectPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -23,38 +22,67 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(grabAction.triggered) {
+        if (grabAction.triggered)
+        {
             Debug.Log("GRAB CLICKED");
             ToggleGrab();
         }
 
-        if(heldObject != null) {
-            Vector3 direction = (transform.position - heldObject.transform.position).normalized;
-           Vector3 newPosition = transform.position + 0.5f * direction;
-           objectPosition = newPosition;
-           heldObject.transform.position = newPosition;
+        if (grabbedItem != null)
+        {
+            UpdateGrabbedItem();
         }
     }
 
-    void ToggleGrab() {
-        Item grabbed = GrabItem();
-        if(grabbed == null) {
+    void ToggleGrab()
+    {
+        if (grabbedItem == null)
+        {
+            GrabItem();
+        }
+        else
+        {
+            DropItem();
+        }
+    }
+
+    void GrabItem()
+    {
+        Item itemToGrab = GetItemInGrabArea();
+        if (itemToGrab == null)
+        {
             Debug.Log("NOTHING TO GRAB");
-        } else if(grabbedItem == null) {
-           Debug.Log("GRABBED ITEM");
-           grabbedItem = grabbed;
-           heldObject = grabbed.gameObject;
-        } else {
-            Debug.Log("DROPPED ITEM");
-            grabbedItem = null;
-            heldObject = null;
+        }
+        else
+        {
+            Debug.Log("GRABBED ITEM");
+            grabbedItem = itemToGrab;
         }
     }
 
-    Item GrabItem() {
-        if(grabArea.itemsInArea.Count == 0) {
+    Item GetItemInGrabArea()
+    {
+        if (grabArea.itemsInArea.Count == 0)
+        {
             return null;
         }
         return grabArea.itemsInArea[0];
+    }
+
+    void DropItem()
+    {
+        if (grabbedItem != null)
+        {
+            Debug.Log("DROPPED ITEM");
+        }
+        grabbedItem = null;
+    }
+
+    void UpdateGrabbedItem()
+    {
+        GameObject heldObject = grabbedItem.gameObject;
+        Vector3 direction = (transform.position - heldObject.transform.position).normalized;
+        Vector3 newPosition = transform.position + 0.5f * direction;
+        heldObject.transform.position = newPosition;
     }
 }
