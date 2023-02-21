@@ -91,17 +91,16 @@ public class Player : MonoBehaviour
 
             Vector3 distance = Input.mousePosition - heldObject.transform.position;
             Quaternion rotation = Quaternion.LookRotation(distance, Vector3.up);
-            //heldObject.transform.rotation = Quaternion.Euler(0, rotation.y, 0);
-            //Debug.Log($"Mouse pos: {Input.mousePosition}");
 
-            float sensitivityX = 0.5f;
-            float sensitivityY = sensitivityX;
-            heldObject
-                .GetComponent<Rigidbody>()
-                .transform.Rotate(Vector3.right * sensitivityX * Time.deltaTime, rotation.y);
-            heldObject
-                .GetComponent<Rigidbody>()
-                .transform.Rotate(Vector3.up * sensitivityY * Time.deltaTime, rotation.x);
+            Vector3 mouseScreenPosition = new Vector3(
+                Input.mousePosition.x,
+                Input.mousePosition.y,
+                -Camera.main.transform.position.z
+            );
+
+            Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
+
+            heldObject.transform.LookAt(mouseWorldPosition, Vector3.up);
         }
     }
 
