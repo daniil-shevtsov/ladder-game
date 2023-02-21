@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 {
     public InputAction grabAction;
     public Camera cc;
+
     private Item grabbedItem;
     private GrabArea grabArea;
     private GameObject heldObject;
@@ -83,13 +84,17 @@ public class Player : MonoBehaviour
         {
             GameObject heldObject = grabbedItem.gameObject;
             Vector3 direction = (transform.position - heldObject.transform.position).normalized;
-            Vector3 newPosition = transform.position + 0.5f * direction;
+            //Vector3 newPosition = transform.position + 0.5f * direction;
+            Vector3 newPosition = transform.position + new Vector3(1.5f, 1.5f, 1.5f);
+
             heldObject.transform.position = newPosition;
         }
     }
 
     void ToggleCollision(GameObject gameObject, bool isEnabled)
     {
-        gameObject.GetComponent<Rigidbody>().isKinematic = !isEnabled;
+        Rigidbody body = gameObject.GetComponent<Rigidbody>();
+        body.isKinematic = !isEnabled;
+        body.freezeRotation = !isEnabled;
     }
 }
