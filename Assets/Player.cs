@@ -28,10 +28,7 @@ public class Player : MonoBehaviour
             ToggleGrab();
         }
 
-        if (grabbedItem != null)
-        {
-            UpdateGrabbedItem();
-        }
+        UpdateGrabbedItem();
     }
 
     void ToggleGrab()
@@ -57,6 +54,7 @@ public class Player : MonoBehaviour
         {
             Debug.Log("GRABBED ITEM");
             grabbedItem = itemToGrab;
+            ToggleCollision(grabbedItem.gameObject, false);
         }
     }
 
@@ -74,15 +72,24 @@ public class Player : MonoBehaviour
         if (grabbedItem != null)
         {
             Debug.Log("DROPPED ITEM");
+            ToggleCollision(grabbedItem.gameObject, true);
         }
         grabbedItem = null;
     }
 
     void UpdateGrabbedItem()
     {
-        GameObject heldObject = grabbedItem.gameObject;
-        Vector3 direction = (transform.position - heldObject.transform.position).normalized;
-        Vector3 newPosition = transform.position + 0.5f * direction;
-        heldObject.transform.position = newPosition;
+        if (grabbedItem != null)
+        {
+            GameObject heldObject = grabbedItem.gameObject;
+            Vector3 direction = (transform.position - heldObject.transform.position).normalized;
+            Vector3 newPosition = transform.position + 0.5f * direction;
+            heldObject.transform.position = newPosition;
+        }
+    }
+
+    void ToggleCollision(GameObject gameObject, bool isEnabled)
+    {
+        gameObject.GetComponent<Rigidbody>().isKinematic = !isEnabled;
     }
 }
