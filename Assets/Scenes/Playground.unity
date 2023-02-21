@@ -1096,14 +1096,32 @@ MonoBehaviour:
     m_SingletonActionBindings:
     - m_Name: 
       m_Id: e4e44894-924a-4a82-8e57-f0cd84b1d12e
-      m_Path: <Keyboard>/f
+      m_Path: <Keyboard>/g
       m_Interactions: Press
       m_Processors: 
       m_Groups: 
       m_Action: Grab
       m_Flags: 0
     m_Flags: 0
+  climbAction:
+    m_Name: Climb
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 3c45be28-99de-41a2-9b8e-a51c0231551a
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: e9ec2478-2122-4717-8a66-c112dfa585aa
+      m_Path: <Keyboard>/c
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Climb
+      m_Flags: 0
+    m_Flags: 0
   cc: {fileID: 124056529}
+  climbingSpeed: 1
 --- !u!136 &1835804805
 CapsuleCollider:
   m_ObjectHideFlags: 0

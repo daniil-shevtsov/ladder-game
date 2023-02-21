@@ -8,19 +8,29 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     public InputAction grabAction;
+    public InputAction climbAction;
     public Camera cc;
+
+    public float climbingSpeed;
 
     private Item grabbedItem;
     private GrabArea grabArea;
     private GameObject heldObject;
     private Vector3 handPositionOffset;
 
+    private Ladder nearLadder;
+    private CharacterController characterController;
+    private bool isClimbing = false;
+
     // Start is called before the first frame update
     void Start()
     {
         grabArea = GetComponent<GrabArea>();
+        characterController = GetComponent<CharacterController>();
+
         handPositionOffset = new Vector3(1.5f, 1.5f, 1.5f);
         grabAction.Enable();
+        climbAction.Enable();
     }
 
     // Update is called once per frame
@@ -32,7 +42,60 @@ public class Player : MonoBehaviour
             ToggleGrab();
         }
 
+        if (climbAction.triggered)
+        {
+            StartClimbing();
+        }
+
         UpdateGrabbedItem();
+
+        if (nearLadder != null && isClimbing)
+        {
+            if (Input.GetKey(KeyCode.O))
+            {
+                characterController.enabled = false;
+                Debug.Log("Climb up");
+                //characterController.Move(new Vector3(0, 1, 0) * Time.deltaTime * climbingSpeed);
+                transform.Translate(new Vector3(0, 1, 0) * Time.deltaTime * climbingSpeed);
+            }
+            else if (Input.GetKey(KeyCode.P))
+            {
+                characterController.enabled = false;
+                Debug.Log("Climb down");
+                //characterController.Move(new Vector3(0, -1, 0) * Time.deltaTime * climbingSpeed);
+                transform.Translate(new Vector3(0, -1, 0) * Time.deltaTime * climbingSpeed);
+            }
+            else
+            {
+                characterController.enabled = true;
+            }
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        Ladder ladder = collision.gameObject.GetComponent<Ladder>();
+        if (ladder != null)
+        {
+            Debug.Log("Walked to ladder");
+            nearLadder = ladder;
+        }
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        Ladder ladder = collision.gameObject.GetComponent<Ladder>();
+        if (ladder != null)
+        {
+            Debug.Log("Walked away from ladder");
+            nearLadder = null;
+        }
+    }
+
+    void StartClimbing()
+    {
+        Debug.Log("Start climbing");
+        isClimbing = true;
     }
 
     void ToggleGrab()
