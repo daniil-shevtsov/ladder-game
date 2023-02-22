@@ -62,15 +62,19 @@ public class Player : MonoBehaviour
 
         if (nearLadder != null && currentState == PlayerState.Climbing)
         {
+            Vector3 climbingDirection = nearLadder.gameObject.transform.up;
+            Debug.DrawRay(transform.position, climbingDirection, Color.red, 1);
+            Debug.DrawRay(transform.position, -climbingDirection, Color.red, 1);
+
             if (Input.GetKey(KeyCode.W))
             {
                 Debug.Log("Climb up");
-                transform.Translate(new Vector3(0, 1, 0) * Time.deltaTime * climbingSpeed);
+                transform.Translate(climbingDirection * Time.deltaTime * climbingSpeed);
             }
             else if (Input.GetKey(KeyCode.S))
             {
                 Debug.Log("Climb down");
-                transform.Translate(new Vector3(0, -1, 0) * Time.deltaTime * climbingSpeed);
+                transform.Translate(-climbingDirection * Time.deltaTime * climbingSpeed);
             }
         }
     }
