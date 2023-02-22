@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     public Camera cc;
 
     public float climbingSpeed = 3;
+    public float dragForceAmount = 500;
 
     private Item grabbedItem;
     private GrabArea grabArea;
@@ -22,6 +23,7 @@ public class Player : MonoBehaviour
     private Ladder nearLadder;
     private MyThirdPersonController characterController;
     private PlayerState currentState = PlayerState.Idle;
+    private Vector3 originalObjectPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -50,7 +52,7 @@ public class Player : MonoBehaviour
             {
                 StopClimbing();
             }
-            else if (currentState == PlayerState.Idle)
+            else if (currentState == PlayerState.Idle && nearLadder != null)
             {
                 StartClimbing();
             }
@@ -63,13 +65,11 @@ public class Player : MonoBehaviour
             if (Input.GetKey(KeyCode.W))
             {
                 Debug.Log("Climb up");
-                //characterController.Move(new Vector3(0, 1, 0) * Time.deltaTime * climbingSpeed);
                 transform.Translate(new Vector3(0, 1, 0) * Time.deltaTime * climbingSpeed);
             }
             else if (Input.GetKey(KeyCode.S))
             {
                 Debug.Log("Climb down");
-                //characterController.Move(new Vector3(0, -1, 0) * Time.deltaTime * climbingSpeed);
                 transform.Translate(new Vector3(0, -1, 0) * Time.deltaTime * climbingSpeed);
             }
         }
@@ -186,7 +186,6 @@ public class Player : MonoBehaviour
         if (grabbedItem != null)
         {
             GameObject heldObject = grabbedItem.gameObject;
-            //Vector3 direction = (transform.position - heldObject.transform.position).normalized;
             Vector3 direction = transform.forward.normalized;
             float distance = Vector3.Distance(
                 transform.position,
@@ -196,8 +195,6 @@ public class Player : MonoBehaviour
 
             heldObject.transform.position = handPosition;
             heldObject.transform.rotation = Quaternion.LookRotation(transform.forward);
-
-            //RotateAsPlayer(heldObject);
         }
     }
 
@@ -205,7 +202,6 @@ public class Player : MonoBehaviour
     {
         Rigidbody body = gameObject.GetComponent<Rigidbody>();
         body.isKinematic = !isEnabled;
-        //body.freezeRotation = !isEnabled;
     }
 
     enum PlayerState

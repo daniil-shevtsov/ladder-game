@@ -40,18 +40,4 @@ public class GrabArea : MonoBehaviour
         }
     }
 
-    //  void OnCollisionEnter(Collision collider) {
-    //     Debug.Log("COLLISION");
-    //     if(!itemsInArea.Contains(collider.gameObject.GetComponent<Item>())) {
-    //         itemsInArea.Add(collider.gameObject.GetComponent<Item>());
-    //         Debug.Log("Count: " + itemsInArea.Count);
-    //     }
-    //  }
-
-    // void OnCollisionExit(Collision collider) {
-    //     if(itemsInArea.Contains(collider.gameObject.GetComponent<Item>())) {
-    //         itemsInArea.Remove(collider.gameObject.GetComponent<Item>());
-    //     }
-    // }   
-
 }
