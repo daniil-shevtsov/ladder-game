@@ -60,13 +60,13 @@ public class Player : MonoBehaviour
 
         if (nearLadder != null && currentState == PlayerState.Climbing)
         {
-            if (Input.GetKey(KeyCode.O))
+            if (Input.GetKey(KeyCode.W))
             {
                 Debug.Log("Climb up");
                 //characterController.Move(new Vector3(0, 1, 0) * Time.deltaTime * climbingSpeed);
                 transform.Translate(new Vector3(0, 1, 0) * Time.deltaTime * climbingSpeed);
             }
-            else if (Input.GetKey(KeyCode.P))
+            else if (Input.GetKey(KeyCode.S))
             {
                 Debug.Log("Climb down");
                 //characterController.Move(new Vector3(0, -1, 0) * Time.deltaTime * climbingSpeed);
@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+     void OnTriggerEnter(Collider collision)
     {
         Ladder ladder = collision.gameObject.GetComponent<Ladder>();
         if (ladder != null)
@@ -85,7 +85,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void OnCollisionExit(Collision collision)
+    void OnTriggerExit(Collider collision)
     {
         Ladder ladder = collision.gameObject.GetComponent<Ladder>();
         if (ladder != null)
@@ -139,6 +139,7 @@ public class Player : MonoBehaviour
 
     Item GetItemInGrabArea()
     {
+        Debug.Log($"Trying to grab but count {grabArea.itemsInArea.Count}");
         if (grabArea.itemsInArea.Count == 0)
         {
             return null;

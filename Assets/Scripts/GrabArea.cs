@@ -6,6 +6,8 @@ public class GrabArea : MonoBehaviour
 {
     public List<Item> itemsInArea;
 
+    //public Collider grabAreaCollider;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,18 +20,38 @@ public class GrabArea : MonoBehaviour
         
     }
 
-     void OnCollisionEnter(Collision collider) {
-        Debug.Log("COLLISION");
-        if(!itemsInArea.Contains(collider.gameObject.GetComponent<Item>())) {
-            itemsInArea.Add(collider.gameObject.GetComponent<Item>());
+     void OnTriggerEnter(Collider collision)
+    {
+         Debug.Log("grab area trigger enter");
+         Item item = collision.gameObject.GetComponent<Item>();
+        if(item != null && !itemsInArea.Contains(item)) {
+            itemsInArea.Add(item);
             Debug.Log("Count: " + itemsInArea.Count);
+            Debug.Log(item);
         }
-     }
+    }
 
-    void OnCollisionExit(Collision collider) {
-        if(itemsInArea.Contains(collider.gameObject.GetComponent<Item>())) {
-            itemsInArea.Remove(collider.gameObject.GetComponent<Item>());
+    void OnTriggerExit(Collider collision)
+    {
+         Debug.Log("grab area trigger exit");
+       if(itemsInArea.Contains(collision.gameObject.GetComponent<Item>())) {
+            Debug.Log("remove item from area");
+            itemsInArea.Remove(collision.gameObject.GetComponent<Item>());
         }
-    }   
+    }
+
+    //  void OnCollisionEnter(Collision collider) {
+    //     Debug.Log("COLLISION");
+    //     if(!itemsInArea.Contains(collider.gameObject.GetComponent<Item>())) {
+    //         itemsInArea.Add(collider.gameObject.GetComponent<Item>());
+    //         Debug.Log("Count: " + itemsInArea.Count);
+    //     }
+    //  }
+
+    // void OnCollisionExit(Collision collider) {
+    //     if(itemsInArea.Contains(collider.gameObject.GetComponent<Item>())) {
+    //         itemsInArea.Remove(collider.gameObject.GetComponent<Item>());
+    //     }
+    // }   
 
 }
