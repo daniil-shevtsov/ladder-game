@@ -60,6 +60,10 @@ public class Player : MonoBehaviour
 
         UpdateGrabbedItem();
 
+        if(nearLadder != null && Input.GetKey(KeyCode.P)) {
+            nearLadder.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward, ForceMode.Force);
+        }
+
         if (nearLadder != null && currentState == PlayerState.Climbing)
         {
             Vector3 climbingDirection = nearLadder.gameObject.transform.up;
@@ -69,12 +73,12 @@ public class Player : MonoBehaviour
             if (Input.GetKey(KeyCode.W))
             {
                 Debug.Log("Climb up");
-                transform.Translate(climbingDirection * Time.deltaTime * climbingSpeed);
+                transform.Translate(climbingDirection * Time.deltaTime * climbingSpeed, Space.World);
             }
             else if (Input.GetKey(KeyCode.S))
             {
                 Debug.Log("Climb down");
-                transform.Translate(-climbingDirection * Time.deltaTime * climbingSpeed);
+                transform.Translate(-climbingDirection * Time.deltaTime * climbingSpeed, Space.World);
             }
         }
     }
@@ -105,6 +109,7 @@ public class Player : MonoBehaviour
         // characterController.enabled = false;
         characterController.isGravityEnabled = false;
         currentState = PlayerState.Climbing;
+        transform.parent = nearLadder.transform;
     }
 
     void StopClimbing()
@@ -112,6 +117,7 @@ public class Player : MonoBehaviour
         Debug.Log("Stop climbing");
         characterController.isGravityEnabled = true;
         currentState = PlayerState.Idle;
+        transform.parent = null;
     }
 
     void ToggleGrab()
