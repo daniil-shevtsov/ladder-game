@@ -73,12 +73,16 @@ public class Player : MonoBehaviour
             if (Input.GetKey(KeyCode.W))
             {
                 Debug.Log("Climb up");
-                transform.Translate(climbingDirection * Time.deltaTime * climbingSpeed, Space.World);
+                GetComponent<CharacterController>().Move(climbingDirection * Time.deltaTime * climbingSpeed);
+                //GetComponent<Rigidbody>().MovePosition(climbingDirection * Time.deltaTime * climbingSpeed);
+                //transform.Translate(climbingDirection * Time.deltaTime * climbingSpeed, Space.World);
             }
             else if (Input.GetKey(KeyCode.S))
             {
                 Debug.Log("Climb down");
-                transform.Translate(-climbingDirection * Time.deltaTime * climbingSpeed, Space.World);
+                GetComponent<CharacterController>().Move(-climbingDirection * Time.deltaTime * climbingSpeed);
+                //GetComponent<Rigidbody>().MovePosition(-climbingDirection * Time.deltaTime * climbingSpeed);
+                //transform.Translate(-climbingDirection * Time.deltaTime * climbingSpeed, Space.World);
             }
         }
     }
