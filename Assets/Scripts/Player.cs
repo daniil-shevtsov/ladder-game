@@ -171,44 +171,44 @@ public class Player : MonoBehaviour
         grabbedItem = null;
     }
 
-    void RotateAsPlayer(GameObject gameObject)
-    {
-        Vector3 handPosition = transform.position + handPositionOffset;
-        Quaternion rotation = Quaternion.LookRotation(transform.position - handPosition);
+    // void RotateAsPlayer(GameObject gameObject)
+    // {
+    //     Vector3 handPosition = transform.position + handPositionOffset;
+    //     Quaternion rotation = Quaternion.LookRotation(transform.position - handPosition);
 
-        gameObject.transform.rotation = transform.rotation;
-    }
+    //     gameObject.transform.rotation = transform.rotation;
+    // }
 
-    void RotateByMouse(GameObject gameObject)
-    {
-        Vector3 distance = Input.mousePosition - gameObject.transform.position;
-        Quaternion rotation = Quaternion.LookRotation(distance, Vector3.up);
+    // void RotateByMouse(GameObject gameObject)
+    // {
+    //     Vector3 distance = Input.mousePosition - gameObject.transform.position;
+    //     Quaternion rotation = Quaternion.LookRotation(distance, Vector3.up);
 
-        Vector3 mouseScreenPosition = new Vector3(
-            Input.mousePosition.x,
-            Input.mousePosition.y,
-            -Camera.main.transform.position.z
-        );
+    //     Vector3 mouseScreenPosition = new Vector3(
+    //         Input.mousePosition.x,
+    //         Input.mousePosition.y,
+    //         -Camera.main.transform.position.z
+    //     );
 
-        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
+    //     Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
 
-        gameObject.transform.LookAt(mouseWorldPosition, Vector3.up);
-    }
+    //     gameObject.transform.LookAt(mouseWorldPosition, Vector3.up);
+    // }
 
     void UpdateGrabbedItem()
     {
         if (grabbedItem != null)
         {
-            GameObject heldObject = grabbedItem.gameObject;
-            Vector3 direction = transform.forward.normalized;
-            float distance = Vector3.Distance(
-                transform.position,
-                transform.position + handPositionOffset
-            );
-            Vector3 handPosition = transform.position + direction * 3.5f;
+            // GameObject heldObject = grabbedItem.gameObject;
+            // Vector3 direction = transform.forward.normalized;
+            // float distance = Vector3.Distance(
+            //     transform.position,
+            //     transform.position + handPositionOffset
+            // );
+            // Vector3 handPosition = transform.position + direction * 3.5f;
 
-            heldObject.transform.position = handPosition;
-            heldObject.transform.rotation = Quaternion.LookRotation(transform.forward);
+            //heldObject.transform.position = handPosition;
+          //  heldObject.transform.rotation = Quaternion.LookRotation(transform.forward);
         }
     }
 
