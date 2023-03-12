@@ -43,6 +43,8 @@ public class PlayerControl : MonoBehaviour
         Vector3 mouseVec = Vector3.ClampMagnitude(mouse - center, maxRange);
         Vector3 desiredHammerDirection = mouse - transform.position;
 
+        Quaternion orientation = Quaternion.LookRotation(desiredHammerDirection, Vector3.up);
+
         // Compute new hammer pos
         Vector3 newHammerPos = body.position + desiredHammerDirection;
         Vector3 hammerMoveVec = newHammerPos - hammerHead.position;
@@ -53,7 +55,11 @@ public class PlayerControl : MonoBehaviour
         //hammerHead.GetComponent<Rigidbody>().MovePosition(newHammerPos);
 
         hammerHead.transform.position = hammerPosition;//originalHammerTransform.position;
-        hammerHead.transform.localEulerAngles = hammerRotation;//originalRotation;
+        hammerHead.transform.rotation = orientation;//originalRotation;
 
+
+        Debug.DrawLine(hammerHead.transform.position, hammerHead.transform.position + hammerHead.transform.up.normalized * 2, Color.green, 1);
+        Debug.DrawLine(hammerHead.transform.position, hammerHead.transform.position + hammerHead.transform.right.normalized * 2, Color.red, 1);
+        Debug.DrawLine(hammerHead.transform.position, hammerHead.transform.position + hammerHead.transform.forward.normalized * 2, Color.blue, 1);
     }
 }
