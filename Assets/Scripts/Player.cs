@@ -199,16 +199,16 @@ public class Player : MonoBehaviour
     {
         if (grabbedItem != null)
         {
-            // GameObject heldObject = grabbedItem.gameObject;
-            // Vector3 direction = transform.forward.normalized;
-            // float distance = Vector3.Distance(
-            //     transform.position,
-            //     transform.position + handPositionOffset
-            // );
-            // Vector3 handPosition = transform.position + direction * 3.5f;
+            GameObject heldObject = grabbedItem.gameObject;
+            Vector3 direction = transform.forward.normalized;
+            float distance = Vector3.Distance(
+                transform.position,
+                transform.position + handPositionOffset
+            );
+            Vector3 handPosition = transform.position + direction * 3.5f;
 
-            //heldObject.transform.position = handPosition;
-          //  heldObject.transform.rotation = Quaternion.LookRotation(transform.forward);
+            heldObject.transform.position = handPosition;
+           heldObject.transform.rotation = Quaternion.LookRotation(transform.forward);
         }
     }
 
