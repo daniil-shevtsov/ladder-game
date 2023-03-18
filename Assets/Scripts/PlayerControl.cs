@@ -48,13 +48,13 @@ public class PlayerControl : MonoBehaviour
         // Compute new hammer pos
         Vector3 newHammerPos = body.position + desiredHammerDirection;
         Vector3 hammerMoveVec = newHammerPos - hammerHead.position;
-        newHammerPos = hammerPosition; //hammerHead.position + hammerMoveVec * 0.2f;
+        newHammerPos = transform.position; //hammerHead.position + hammerMoveVec * 0.2f;
         Vector3 newHammerRotation = hammerRotation;
 
         // Update hammer pos
         //hammerHead.GetComponent<Rigidbody>().MovePosition(newHammerPos);
 
-        hammerHead.transform.position = hammerPosition;//originalHammerTransform.position;
+       // hammerHead.transform.position = transform.position;//originalHammerTransform.position;
         hammerHead.transform.rotation = orientation;//originalRotation;
 
 
