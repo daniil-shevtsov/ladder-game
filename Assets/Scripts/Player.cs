@@ -8,8 +8,6 @@ using StarterAssets;
 
 public class Player : MonoBehaviour
 {
-    public InputAction grabAction;
-    public InputAction climbAction;
     public Camera cc;
 
     public float climbingSpeed = 3;
@@ -32,20 +30,18 @@ public class Player : MonoBehaviour
         characterController = GetComponent<MyThirdPersonController>();
 
         handPositionOffset = new Vector3(1.5f, 1.5f, 1.5f);
-        grabAction.Enable();
-        climbAction.Enable();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (grabAction.triggered)
+        if (Input.GetKey(KeyCode.G))
         {
             Debug.Log("GRAB CLICKED");
             ToggleGrab();
         }
 
-        if (climbAction.triggered)
+        if (Input.GetKey(KeyCode.C))
         {
             Debug.Log("Climb clicked");
             if (currentState == PlayerState.Climbing)
