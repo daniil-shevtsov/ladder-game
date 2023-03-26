@@ -519,6 +519,8 @@ MonoBehaviour:
   cc: {fileID: 124056529}
   climbingSpeed: 3
   dragForceAmount: 500
+  newGrabSystem: 1
+  handHinge: {fileID: 1973770363}
 --- !u!114 &506836555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2273,6 +2275,8 @@ MonoBehaviour:
   cc: {fileID: 124056529}
   climbingSpeed: 3
   dragForceAmount: 500
+  newGrabSystem: 0
+  handHinge: {fileID: 0}
 --- !u!136 &1835804805
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2383,8 +2387,8 @@ HingeJoint:
   m_ConnectedBody: {fileID: 29595055}
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
-  m_Axis: {x: 0, y: 0, z: 0}
-  m_AutoConfigureConnectedAnchor: 1
+  m_Axis: {x: 1.1, y: 0, z: 0.03}
+  m_AutoConfigureConnectedAnchor: 0
   m_ConnectedAnchor: {x: 0, y: 0, z: 0}
   m_UseSpring: 0
   m_Spring:

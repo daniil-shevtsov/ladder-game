@@ -12,11 +12,13 @@ public class Player : MonoBehaviour
 
     public float climbingSpeed = 3;
     public float dragForceAmount = 500;
+    public bool newGrabSystem = false;
 
     private Item grabbedItem;
     private GrabArea grabArea;
     private GameObject heldObject;
     private Vector3 handPositionOffset;
+    public HingeJoint handHinge; 
 
     private Ladder nearLadder;
     private MyThirdPersonController characterController;
@@ -28,6 +30,7 @@ public class Player : MonoBehaviour
     {
         grabArea = GetComponent<GrabArea>();
         characterController = GetComponent<MyThirdPersonController>();
+        //handHinge = GetComponent<HingeJoint>();
 
         handPositionOffset = new Vector3(1.5f, 1.5f, 1.5f);
     }
@@ -35,13 +38,13 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.G))
+        if (Input.GetKeyDown(KeyCode.G))
         {
             Debug.Log("GRAB CLICKED");
             ToggleGrab();
         }
 
-        if (Input.GetKey(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             Debug.Log("Climb clicked");
             if (currentState == PlayerState.Climbing)
@@ -122,28 +125,40 @@ public class Player : MonoBehaviour
 
     void ToggleGrab()
     {
-        if (grabbedItem == null)
-        {
-            GrabItem();
-        }
-        else
-        {
-            DropItem();
-        }
+        
+        ChangeGrabState();
     }
 
-    void GrabItem()
-    {
-        Item itemToGrab = GetItemInGrabArea();
-        if (itemToGrab == null)
+    void ChangeGrabState() {
+
+        if (grabbedItem == null)
         {
-            Debug.Log("NOTHING TO GRAB");
+            Item itemToGrab = GetItemInGrabArea();
+            if (itemToGrab == null)
+            {
+                Debug.Log("NOTHING TO GRAB");
+            }
+            else
+            {
+                Debug.Log("GRABBED ITEM");
+                grabbedItem = itemToGrab;
+                if(newGrabSystem) {
+                    handHinge.connectedBody = itemToGrab.gameObject.GetComponent<Rigidbody>();
+                    handHinge.axis = new Vector3(1,0,0);
+                } else {
+                    ToggleCollision(grabbedItem.gameObject, false);
+                }
+            }
         }
         else
         {
-            Debug.Log("GRABBED ITEM");
-            grabbedItem = itemToGrab;
-            ToggleCollision(grabbedItem.gameObject, false);
+             Debug.Log("DROPPED ITEM");
+            if(newGrabSystem) {
+                handHinge.connectedBody = null;
+            } else {
+                ToggleCollision(grabbedItem.gameObject, true);
+            }
+            grabbedItem = null;
         }
     }
 
@@ -155,16 +170,6 @@ public class Player : MonoBehaviour
             return null;
         }
         return grabArea.itemsInArea[0];
-    }
-
-    void DropItem()
-    {
-        if (grabbedItem != null)
-        {
-            Debug.Log("DROPPED ITEM");
-            ToggleCollision(grabbedItem.gameObject, true);
-        }
-        grabbedItem = null;
     }
 
     // void RotateAsPlayer(GameObject gameObject)
@@ -193,7 +198,7 @@ public class Player : MonoBehaviour
 
     void UpdateGrabbedItem()
     {
-        if (grabbedItem != null)
+        if (grabbedItem != null && !newGrabSystem)
         {
             GameObject heldObject = grabbedItem.gameObject;
             Vector3 direction = transform.forward.normalized;
