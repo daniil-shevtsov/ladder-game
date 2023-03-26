@@ -13,12 +13,13 @@ public class Player : MonoBehaviour
     public float climbingSpeed = 3;
     public float dragForceAmount = 500;
     public bool newGrabSystem = false;
+    public HingeJoint handHinge; 
 
     private Item grabbedItem;
     private GrabArea grabArea;
     private GameObject heldObject;
     private Vector3 handPositionOffset;
-    public HingeJoint handHinge; 
+    
 
     private Ladder nearLadder;
     private MyThirdPersonController characterController;
@@ -83,6 +84,18 @@ public class Player : MonoBehaviour
                 //GetComponent<Rigidbody>().MovePosition(-climbingDirection * Time.deltaTime * climbingSpeed);
                 //transform.Translate(-climbingDirection * Time.deltaTime * climbingSpeed, Space.World);
             }
+        }
+
+        
+        if(Input.GetKeyDown(KeyCode.U)) {
+            JointSpring jointSpring = handHinge.spring;
+            jointSpring.targetPosition = 90f;
+            handHinge.spring = jointSpring;
+        }
+        if(Input.GetKeyDown(KeyCode.J)) {
+            JointSpring jointSpring = handHinge.spring;
+            jointSpring.targetPosition = -90f;
+            handHinge.spring = jointSpring;
         }
     }
 
