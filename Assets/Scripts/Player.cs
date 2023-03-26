@@ -156,6 +156,7 @@ public class Player : MonoBehaviour
                 Debug.Log("GRABBED ITEM");
                 grabbedItem = itemToGrab;
                 if(newGrabSystem) {
+                    //itemToGrab.gameObject.transform.eulerAngles = new Vector3(-90f, -90f, 0f);
                     handHinge.connectedBody = itemToGrab.gameObject.GetComponent<Rigidbody>();
                     handHinge.axis = new Vector3(1,0,0);
                 } else {
