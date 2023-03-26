@@ -126,12 +126,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!54 &29595055 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 3618965917478671673, guid: 75f61d72a8b6a09468efeb942221c072,
-    type: 3}
-  m_PrefabInstance: {fileID: 1726877598}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &112303186
 GameObject:
   m_ObjectHideFlags: 0
@@ -1772,27 +1766,27 @@ PrefabInstance:
     - target: {fileID: 6762979542255724991, guid: 75f61d72a8b6a09468efeb942221c072,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7014716
+      value: 0.4998997
       objectReference: {fileID: 0}
     - target: {fileID: 6762979542255724991, guid: 75f61d72a8b6a09468efeb942221c072,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.08766251
+      value: -0.4998997
       objectReference: {fileID: 0}
     - target: {fileID: 6762979542255724991, guid: 75f61d72a8b6a09468efeb942221c072,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.7018378
+      value: -0.5001003
       objectReference: {fileID: 0}
     - target: {fileID: 6762979542255724991, guid: 75f61d72a8b6a09468efeb942221c072,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.08761677
+      value: -0.5001003
       objectReference: {fileID: 0}
     - target: {fileID: 6762979542255724991, guid: 75f61d72a8b6a09468efeb942221c072,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -14.239
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 6762979542255724991, guid: 75f61d72a8b6a09468efeb942221c072,
         type: 3}
@@ -2384,16 +2378,16 @@ HingeJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1973770361}
-  m_ConnectedBody: {fileID: 29595055}
+  m_ConnectedBody: {fileID: 0}
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1.1, y: 0, z: 0.03}
   m_AutoConfigureConnectedAnchor: 0
   m_ConnectedAnchor: {x: 0, y: 0, z: 0}
-  m_UseSpring: 0
+  m_UseSpring: 1
   m_Spring:
-    spring: 0
-    damper: 0
+    spring: 150
+    damper: 25
     targetPosition: 0
   m_UseMotor: 0
   m_Motor:

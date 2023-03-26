@@ -94,7 +94,7 @@ public class Player : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.J)) {
             JointSpring jointSpring = handHinge.spring;
-            jointSpring.targetPosition = -90f;
+            jointSpring.targetPosition = 0f;
             handHinge.spring = jointSpring;
         }
     }
