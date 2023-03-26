@@ -349,7 +349,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 485629903}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: PlayerCameraRoot
   m_TagString: CinemachineTarget
   m_Icon: {fileID: 0}
@@ -364,7 +364,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 485629902}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.9, z: -0.39}
   m_LocalScale: {x: 1.7096429, y: 1.9047619, z: 1.629366}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -382,11 +382,12 @@ GameObject:
   - component: {fileID: 506836551}
   - component: {fileID: 506836550}
   - component: {fileID: 506836549}
-  - component: {fileID: 506836548}
   - component: {fileID: 506836552}
   - component: {fileID: 506836555}
   - component: {fileID: 506836554}
   - component: {fileID: 506836553}
+  - component: {fileID: 506836556}
+  - component: {fileID: 506836557}
   m_Layer: 8
   m_Name: Body
   m_TagString: Player
@@ -394,20 +395,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!136 &506836548
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 506836547}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &506836549
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -472,6 +459,7 @@ Transform:
   m_Children:
   - {fileID: 1828628409}
   - {fileID: 485629903}
+  - {fileID: 762962268}
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -521,24 +509,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d5a62f59f4e6094ca5c40e8c3f89a6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grabAction:
-    m_Name: Grab
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 9580a17e-488a-43d3-be31-9a436ce3a292
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  climbAction:
-    m_Name: Climb
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 98474781-2481-414a-9159-1e42897640db
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
   cc: {fileID: 124056529}
   climbingSpeed: 3
   dragForceAmount: 500
@@ -561,6 +531,33 @@ MonoBehaviour:
   upLimit: -50
   downLimit: 50
   isGravityEnabled: 1
+--- !u!136 &506836556
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 506836547}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 2
+  m_Height: 1.9999999
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &506836557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 506836547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc9f5c362d1630e4fb1dad0f8affdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemsInArea: []
 --- !u!1 &542508511
 GameObject:
   m_ObjectHideFlags: 0
@@ -889,6 +886,37 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0271df749728104eac22c3d897fd8ce, type: 3}
+--- !u!1 &762962267
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 762962268}
+  m_Layer: 3
+  m_Name: Trigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &762962268
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762962267}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 506836551}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &785291253
 GameObject:
   m_ObjectHideFlags: 0
@@ -1445,12 +1473,12 @@ PrefabInstance:
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.229
+      value: 1.7014999
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.40900016
+      value: -0.6570997
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f,
         type: 3}
@@ -1514,12 +1542,12 @@ PrefabInstance:
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.229
+      value: 1.7014999
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.40900016
+      value: -0.6570997
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8,
         type: 3}
@@ -1799,7 +1827,7 @@ PrefabInstance:
     - target: {fileID: 3893294197879345259, guid: 64dce48905ffd9b4293e595fa6941544,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.94
+      value: -0.22
       objectReference: {fileID: 0}
     - target: {fileID: 3893294197879345259, guid: 64dce48905ffd9b4293e595fa6941544,
         type: 3}
@@ -2163,7 +2191,7 @@ SphereCollider:
   m_GameObject: {fileID: 1828628408}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -2235,40 +2263,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d5a62f59f4e6094ca5c40e8c3f89a6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grabAction:
-    m_Name: Grab
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 183932e5-e830-4a07-91ab-ccad0320fd48
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: e4e44894-924a-4a82-8e57-f0cd84b1d12e
-      m_Path: <Keyboard>/g
-      m_Interactions: Press
-      m_Processors: 
-      m_Groups: 
-      m_Action: Grab
-      m_Flags: 0
-    m_Flags: 0
-  climbAction:
-    m_Name: Climb
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 3c45be28-99de-41a2-9b8e-a51c0231551a
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: e9ec2478-2122-4717-8a66-c112dfa585aa
-      m_Path: <Keyboard>/c
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Climb
-      m_Flags: 0
-    m_Flags: 0
   cc: {fileID: 124056529}
   climbingSpeed: 3
   dragForceAmount: 500
