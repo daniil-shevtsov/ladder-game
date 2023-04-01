@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using StarterAssets;
+// using StarterAssets;
 
 public class Player : MonoBehaviour
 {
