@@ -32,5 +32,21 @@ public class PlayerTest : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
     }
 
+    [UnityTest]
+    public IEnumerator ShouldMoveForwardWhenHasVerticalInput()
+    {
+        var movement = playerSystem.onMoveInput(0f, 1f);
+        Assert.AreEqual(movement.z, 1f);
+        yield return new WaitForSeconds(0.1f);
+    }
+
+    
+    [UnityTest]
+    public IEnumerator ShouldMoveRightWhenHasHorizontalInput()
+    {
+        var movement = playerSystem.onMoveInput(1f, 0f);
+        Assert.AreEqual(movement.x, 1f);
+        yield return new WaitForSeconds(0.1f);
+    }
 
 }

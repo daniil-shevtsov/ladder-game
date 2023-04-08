@@ -17,10 +17,11 @@ public class PlayerSystem : MonoBehaviour
     }
 
     public Vector3 onMoveInput(
-        float vertical,
-        float horizontal
+        float horizontal,
+        float vertical
     )
     {
-        return new Vector3(0f,0f,0f);
+        //return new Vector3(horizontal,0f,vertical);
+        return transform.forward * vertical + transform.right * horizontal;
     }
 }

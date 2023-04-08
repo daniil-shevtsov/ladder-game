@@ -22,15 +22,19 @@ public class Player : MonoBehaviour
     
 
     private Ladder nearLadder;
-    private MyThirdPersonController characterController;
+    // private MyThirdPersonController characterController;
+    private CharacterController characterController;
     private PlayerState currentState = PlayerState.Idle;
     private Vector3 originalObjectPosition;
+    
+    private PlayerSystem playerSystem;
 
     // Start is called before the first frame update
     void Start()
     {
         grabArea = GetComponent<GrabArea>();
-        characterController = GetComponent<MyThirdPersonController>();
+        characterController = GetComponent<CharacterController>();
+        playerSystem = GetComponent<PlayerSystem>();
         //handHinge = GetComponent<HingeJoint>();
 
         handPositionOffset = new Vector3(1.5f, 1.5f, 1.5f);
@@ -97,6 +101,17 @@ public class Player : MonoBehaviour
             jointSpring.targetPosition = 0f;
             handHinge.spring = jointSpring;
         }
+
+        Move();
+    }
+
+    void Move() {
+        float horizontalMove = Input.GetAxis("Horizontal");
+        float verticalMove = Input.GetAxis("Vertical");
+
+        var movement = playerSystem.onMoveInput(horizontalMove, verticalMove);
+
+        characterController.Move(3 * Time.deltaTime * movement);
     }
 
      void OnTriggerEnter(Collider collision)
@@ -123,7 +138,7 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Start climbing");
         // characterController.enabled = false;
-        characterController.isGravityEnabled = false;
+        //characterController.isGravityEnabled = false;
         currentState = PlayerState.Climbing;
         transform.parent = nearLadder.transform;
     }
@@ -131,7 +146,7 @@ public class Player : MonoBehaviour
     void StopClimbing()
     {
         Debug.Log("Stop climbing");
-        characterController.isGravityEnabled = true;
+        //characterController.isGravityEnabled = true;
         currentState = PlayerState.Idle;
         transform.parent = null;
     }
