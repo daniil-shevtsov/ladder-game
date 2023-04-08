@@ -109,7 +109,7 @@ public class Player : MonoBehaviour
         float horizontalMove = Input.GetAxis("Horizontal");
         float verticalMove = Input.GetAxis("Vertical");
 
-        var movement = playerSystem.onMoveInput(horizontalMove, verticalMove);
+        var movement = playerSystem.onMoveInput(horizontalMove, verticalMove, characterController.isGrounded);
 
         characterController.Move(3 * Time.deltaTime * movement);
     }

@@ -28,7 +28,7 @@ public class PlayerTest : MonoBehaviour
     public IEnumerator ShouldStayWhenZeroInput()
     {
         var movement = playerSystem.onMoveInput(0f, 0f);
-        Assert.AreEqual(movement, Vector3.zero);
+        Assert.AreEqual( Vector3.zero, movement);
         yield return new WaitForSeconds(0.1f);
     }
 
@@ -36,7 +36,7 @@ public class PlayerTest : MonoBehaviour
     public IEnumerator ShouldMoveForwardWhenHasVerticalInput()
     {
         var movement = playerSystem.onMoveInput(0f, 1f);
-        Assert.AreEqual(movement.z, 1f);
+        Assert.AreEqual(1f, movement.z);
         yield return new WaitForSeconds(0.1f);
     }
 
@@ -45,8 +45,24 @@ public class PlayerTest : MonoBehaviour
     public IEnumerator ShouldMoveRightWhenHasHorizontalInput()
     {
         var movement = playerSystem.onMoveInput(1f, 0f);
-        Assert.AreEqual(movement.x, 1f);
+        Assert.AreEqual(1f, movement.x);
         yield return new WaitForSeconds(0.1f);
+    }
+
+    [UnityTest]
+    public IEnumerator ShouldStayWhenOnGroundInput()
+    {
+        var movement = playerSystem.onMoveInput(0f, 0f);
+        Assert.AreEqual(0f,movement.y);
+        yield return new WaitForSeconds(0.1f);
+    }
+
+    [UnityTest]
+    public IEnumerator ShouldApplyGravityInTheAirInput()
+    {
+        var movement = playerSystem.onMoveInput(0f, 0f, false);
+        Assert.AreEqual(-9.87f, movement.y);
+         yield return new WaitForSeconds(0.1f);
     }
 
 }

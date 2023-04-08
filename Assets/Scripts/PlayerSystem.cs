@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerSystem : MonoBehaviour
 {
+    public bool isGravityEnabled = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,11 +18,21 @@ public class PlayerSystem : MonoBehaviour
     }
 
     public Vector3 onMoveInput(
-        float horizontal,
-        float vertical
+        float horizontalInput,
+        float verticalInput,
+        bool isGrounded = true
     )
     {
         //return new Vector3(horizontal,0f,vertical);
-        return transform.forward * vertical + transform.right * horizontal;
+        var forwardDirection = transform.forward * verticalInput;
+        var rightDirection = transform.right * horizontalInput;
+
+        var verticalSpeed = 0f;
+        if(isGravityEnabled && !isGrounded) {
+            verticalSpeed = -9.87f;
+        }
+        var topDirection = transform.up * verticalSpeed;
+
+        return  forwardDirection + rightDirection + topDirection;
     }
 }
