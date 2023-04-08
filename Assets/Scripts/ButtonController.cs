@@ -20,6 +20,6 @@ public class ButtonController : MonoBehaviour
     }
 
     public void handleClick() {
-
+        result.text = (int.Parse(fieldA.text) + int.Parse(fieldB.text)).ToString();
     }
 }
