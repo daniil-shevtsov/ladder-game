@@ -30,7 +30,20 @@ public class PlayerSystem : MonoBehaviour
 
     public FunctionalCoreResult functionalCore(PlayerState state, PlayerAction action)
     {
-        return new FunctionalCoreResult(state, null);
+        return action switch
+        {
+            PlayerAction.Init => new FunctionalCoreResult(state, null),
+            PlayerAction.OnMoveInput a
+                => new FunctionalCoreResult(
+                    state.copy(
+                        translationState: new TranslationState(
+                            bodyMovement: onMoveInput(a.horizontalInput, a.verticalInput)
+                        )
+                    ),
+                    null
+                ),
+            _ => new FunctionalCoreResult(state, null)
+        };
     }
 
     public RotationState onRotateInput(
@@ -80,19 +93,54 @@ public struct RotationState
     }
 }
 
+public struct TranslationState
+{
+    public Vector3 bodyMovement;
+
+    public TranslationState(Vector3 bodyMovement)
+    {
+        this.bodyMovement = bodyMovement;
+    }
+}
+
 public struct PlayerState
 {
-    RotationState rotationState;
+    public RotationState rotationState;
+    public TranslationState translationState;
 
-    public PlayerState(RotationState rotationState)
+    public PlayerState(RotationState rotationState, TranslationState translationState)
     {
         this.rotationState = rotationState;
+        this.translationState = translationState;
+    }
+
+    public PlayerState copy(
+        RotationState? rotationState = null,
+        TranslationState? translationState = null
+    )
+    {
+        return new PlayerState(
+            rotationState: rotationState ?? this.rotationState,
+            translationState: translationState ?? this.translationState
+        );
     }
 }
 
 public interface PlayerAction
 {
     struct Init : PlayerAction { };
+
+    struct OnMoveInput : PlayerAction
+    {
+        public float verticalInput;
+        public float horizontalInput;
+
+        public OnMoveInput(float verticalInput, float horizontalInput)
+        {
+            this.verticalInput = verticalInput;
+            this.horizontalInput = horizontalInput;
+        }
+    }
 }
 
 public interface PlayerEvent { }

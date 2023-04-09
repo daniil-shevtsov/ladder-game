@@ -154,10 +154,27 @@ public class PlayerTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldCreateInitialState()
     {
-        var initialState = new PlayerState();
+        var initialState = playerState();
         var result = playerSystem.functionalCore(initialState, new PlayerAction.Init());
         Assert.AreEqual(initialState, result.state);
         yield return new WaitForSeconds(0.1f);
+    }
+
+    [UnityTest]
+    public IEnumerator ShouldMoveForwardWhenHasVerticalInputNew()
+    {
+        var movement = playerSystem.onMoveInput(0f, 1f);
+        var result = playerSystem.functionalCore(
+            playerState(),
+            new PlayerAction.OnMoveInput(horizontalInput: 0f, verticalInput: 1f)
+        );
+        AssertEqual(1f, result.state.translationState.bodyMovement.z);
+        yield return new WaitForSeconds(0.1f);
+    }
+
+    private PlayerState playerState()
+    {
+        return new PlayerState();
     }
 
     private void AssertEqual(float expected, float actual, float error = 0.001f)
