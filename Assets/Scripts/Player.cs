@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+
 // using StarterAssets;
 
 public class Player : MonoBehaviour
@@ -14,20 +15,20 @@ public class Player : MonoBehaviour
     public float climbingSpeed = 3;
     public float dragForceAmount = 500;
     public bool newGrabSystem = false;
-    public HingeJoint handHinge; 
+    public HingeJoint handHinge;
 
     private Item grabbedItem;
     private GrabArea grabArea;
     private GameObject heldObject;
     private Vector3 handPositionOffset;
-    
 
     private Ladder nearLadder;
+
     // private MyThirdPersonController characterController;
     private CharacterController characterController;
     private PlayerState currentState = PlayerState.Idle;
     private Vector3 originalObjectPosition;
-    
+
     private PlayerSystem playerSystem;
 
     // Start is called before the first frame update
@@ -65,8 +66,11 @@ public class Player : MonoBehaviour
 
         UpdateGrabbedItem();
 
-        if(nearLadder != null && Input.GetKey(KeyCode.P)) {
-            nearLadder.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward, ForceMode.Force);
+        if (nearLadder != null && Input.GetKey(KeyCode.P))
+        {
+            nearLadder.gameObject
+                .GetComponent<Rigidbody>()
+                .AddForce(transform.forward, ForceMode.Force);
         }
 
         if (nearLadder != null && currentState == PlayerState.Climbing)
@@ -78,26 +82,29 @@ public class Player : MonoBehaviour
             if (Input.GetKey(KeyCode.W))
             {
                 Debug.Log("Climb up");
-                GetComponent<CharacterController>().Move(climbingDirection * Time.deltaTime * climbingSpeed);
+                GetComponent<CharacterController>()
+                    .Move(climbingDirection * Time.deltaTime * climbingSpeed);
                 //GetComponent<Rigidbody>().MovePosition(climbingDirection * Time.deltaTime * climbingSpeed);
                 //transform.Translate(climbingDirection * Time.deltaTime * climbingSpeed, Space.World);
             }
             else if (Input.GetKey(KeyCode.S))
             {
                 Debug.Log("Climb down");
-                GetComponent<CharacterController>().Move(-climbingDirection * Time.deltaTime * climbingSpeed);
+                GetComponent<CharacterController>()
+                    .Move(-climbingDirection * Time.deltaTime * climbingSpeed);
                 //GetComponent<Rigidbody>().MovePosition(-climbingDirection * Time.deltaTime * climbingSpeed);
                 //transform.Translate(-climbingDirection * Time.deltaTime * climbingSpeed, Space.World);
             }
         }
 
-        
-        if(Input.GetKeyDown(KeyCode.U)) {
+        if (Input.GetKeyDown(KeyCode.U))
+        {
             JointSpring jointSpring = handHinge.spring;
             jointSpring.targetPosition = 90f;
             handHinge.spring = jointSpring;
         }
-        if(Input.GetKeyDown(KeyCode.J)) {
+        if (Input.GetKeyDown(KeyCode.J))
+        {
             JointSpring jointSpring = handHinge.spring;
             jointSpring.targetPosition = 0f;
             handHinge.spring = jointSpring;
@@ -107,33 +114,51 @@ public class Player : MonoBehaviour
         Rotate();
     }
 
-    void Move() {
+    void Move()
+    {
         float horizontalMove = Input.GetAxis("Horizontal");
         float verticalMove = Input.GetAxis("Vertical");
 
-        var movement = playerSystem.onMoveInput(horizontalMove, verticalMove, characterController.isGrounded);
+        var movement = playerSystem.onMoveInput(
+            horizontalMove,
+            verticalMove,
+            characterController.isGrounded
+        );
 
         characterController.Move(3 * Time.deltaTime * movement);
     }
 
-    void Rotate() {
+    void Rotate()
+    {
         float horizontalRotation = Input.GetAxis("Mouse X");
         float verticalRotation = Input.GetAxis("Mouse Y");
 
         var rotationState = playerSystem.onRotateInput(
-            horizontalRotation, 
+            horizontalRotation,
             verticalRotation,
             mouseSensitivity: 1f,
             cameraUpLimit: -50f,
-            cameraDownLimit: 50f
-            );
+            cameraDownLimit: 50f,
+            currentCameraRotation: cameraHolder.eulerAngles
+        );
 
-        transform.Rotate(rotationState.bodyRotation.x, rotationState.bodyRotation.y, rotationState.bodyRotation.z);
+        transform.Rotate(
+            rotationState.bodyRotation.x,
+            rotationState.bodyRotation.y,
+            rotationState.bodyRotation.z
+        );
         //cameraHolder.Rotate(rotationState.cameraRotation.x, rotationState.cameraRotation.y, rotationState.cameraRotation.z);
-        cameraHolder.rotation = Quaternion.Euler(rotationState.cameraRotation);
+        if (Mathf.Abs(cameraHolder.eulerAngles.x - rotationState.cameraRotation.x) > 10)
+        {
+            Debug.Log("New camera rotation from to");
+            Debug.Log(cameraHolder.eulerAngles);
+            Debug.Log(rotationState.cameraRotation);
+        }
+
+        cameraHolder.eulerAngles = rotationState.cameraRotation;
     }
 
-     void OnTriggerEnter(Collider collision)
+    void OnTriggerEnter(Collider collision)
     {
         Ladder ladder = collision.gameObject.GetComponent<Ladder>();
         if (ladder != null)
@@ -172,12 +197,11 @@ public class Player : MonoBehaviour
 
     void ToggleGrab()
     {
-        
         ChangeGrabState();
     }
 
-    void ChangeGrabState() {
-
+    void ChangeGrabState()
+    {
         if (grabbedItem == null)
         {
             Item itemToGrab = GetItemInGrabArea();
@@ -189,21 +213,27 @@ public class Player : MonoBehaviour
             {
                 Debug.Log("GRABBED ITEM");
                 grabbedItem = itemToGrab;
-                if(newGrabSystem) {
+                if (newGrabSystem)
+                {
                     //itemToGrab.gameObject.transform.eulerAngles = new Vector3(-90f, -90f, 0f);
                     handHinge.connectedBody = itemToGrab.gameObject.GetComponent<Rigidbody>();
-                    handHinge.axis = new Vector3(1,0,0);
-                } else {
+                    handHinge.axis = new Vector3(1, 0, 0);
+                }
+                else
+                {
                     ToggleCollision(grabbedItem.gameObject, false);
                 }
             }
         }
         else
         {
-             Debug.Log("DROPPED ITEM");
-            if(newGrabSystem) {
+            Debug.Log("DROPPED ITEM");
+            if (newGrabSystem)
+            {
                 handHinge.connectedBody = null;
-            } else {
+            }
+            else
+            {
                 ToggleCollision(grabbedItem.gameObject, true);
             }
             grabbedItem = null;
@@ -257,7 +287,7 @@ public class Player : MonoBehaviour
             Vector3 handPosition = transform.position + direction * 3.5f;
 
             heldObject.transform.position = handPosition;
-           heldObject.transform.rotation = Quaternion.LookRotation(transform.forward);
+            heldObject.transform.rotation = Quaternion.LookRotation(transform.forward);
         }
     }
 
