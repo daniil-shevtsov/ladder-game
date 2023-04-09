@@ -26,40 +26,55 @@ public class PlayerTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldStayWhenZeroInput()
     {
-        var movement = playerSystem.onMoveInput(0f, 0f);
-        Assert.AreEqual(Vector3.zero, movement);
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onMoveInput(horizontalInput: 0f, verticalInput: 0f)
+        );
+        AssertEqual(Vector3.zero, result.state.translationState.bodyMovement);
         yield return new WaitForSeconds(0.1f);
     }
 
     [UnityTest]
     public IEnumerator ShouldMoveForwardWhenHasVerticalInput()
     {
-        var movement = playerSystem.onMoveInput(0f, 1f);
-        AssertEqual(1f, movement.z);
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onMoveInput(horizontalInput: 0f, verticalInput: 1f)
+        );
+        AssertEqual(1f, result.state.translationState.bodyMovement.z);
         yield return new WaitForSeconds(0.1f);
     }
 
     [UnityTest]
     public IEnumerator ShouldMoveRightWhenHasHorizontalInput()
     {
-        var movement = playerSystem.onMoveInput(1f, 0f);
-        AssertEqual(1f, movement.x);
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onMoveInput(horizontalInput: 1f, verticalInput: 1f)
+        );
+        AssertEqual(1f, result.state.translationState.bodyMovement.x);
         yield return new WaitForSeconds(0.1f);
     }
 
     [UnityTest]
     public IEnumerator ShouldStayWhenOnGroundInput()
     {
-        var movement = playerSystem.onMoveInput(0f, 0f);
-        Assert.AreEqual(0f, movement.y);
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onMoveInput(horizontalInput: 0f, verticalInput: 1f)
+        );
+        AssertEqual(0f, result.state.translationState.bodyMovement.y);
         yield return new WaitForSeconds(0.1f);
     }
 
     [UnityTest]
     public IEnumerator ShouldApplyGravityInTheAirInput()
     {
-        var movement = playerSystem.onMoveInput(0f, 0f, false);
-        Assert.AreEqual(-9.87f, movement.y);
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onMoveInput(horizontalInput: 0f, verticalInput: 0f, isGrounded: false)
+        );
+        AssertEqual(-9.87f, result.state.translationState.bodyMovement.y);
         yield return new WaitForSeconds(0.1f);
     }
 
@@ -160,21 +175,22 @@ public class PlayerTest : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
     }
 
-    [UnityTest]
-    public IEnumerator ShouldMoveForwardWhenHasVerticalInputNew()
-    {
-        var movement = playerSystem.onMoveInput(0f, 1f);
-        var result = playerSystem.functionalCore(
-            playerState(),
-            new PlayerAction.OnMoveInput(horizontalInput: 0f, verticalInput: 1f)
-        );
-        AssertEqual(1f, result.state.translationState.bodyMovement.z);
-        yield return new WaitForSeconds(0.1f);
-    }
-
     private PlayerState playerState()
     {
         return new PlayerState();
+    }
+
+    private PlayerAction.OnMoveInput onMoveInput(
+        float horizontalInput = 0f,
+        float verticalInput = 0f,
+        bool isGrounded = true
+    )
+    {
+        return new PlayerAction.OnMoveInput(
+            horizontalInput: horizontalInput,
+            verticalInput: verticalInput,
+            isGrounded: isGrounded
+        );
     }
 
     private void AssertEqual(float expected, float actual, float error = 0.001f)

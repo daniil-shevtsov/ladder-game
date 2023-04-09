@@ -119,13 +119,21 @@ public class Player : MonoBehaviour
         float horizontalMove = Input.GetAxis("Horizontal");
         float verticalMove = Input.GetAxis("Vertical");
 
+        var result = playerSystem.functionalCore(
+            new global::PlayerState(),
+            new PlayerAction.OnMoveInput(
+                horizontalInput: horizontalMove,
+                verticalInput: verticalMove,
+                isGrounded: characterController.isGrounded
+            )
+        );
         var movement = playerSystem.onMoveInput(
             horizontalMove,
             verticalMove,
             characterController.isGrounded
         );
 
-        characterController.Move(3 * Time.deltaTime * movement);
+        characterController.Move(3 * Time.deltaTime * result.state.translationState.bodyMovement);
     }
 
     void Rotate()

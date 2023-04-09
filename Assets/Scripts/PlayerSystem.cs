@@ -37,7 +37,11 @@ public class PlayerSystem : MonoBehaviour
                 => new FunctionalCoreResult(
                     state.copy(
                         translationState: new TranslationState(
-                            bodyMovement: onMoveInput(a.horizontalInput, a.verticalInput)
+                            bodyMovement: onMoveInput(
+                                a.horizontalInput,
+                                a.verticalInput,
+                                a.isGrounded
+                            )
                         )
                     ),
                     null
@@ -134,11 +138,13 @@ public interface PlayerAction
     {
         public float verticalInput;
         public float horizontalInput;
+        public bool isGrounded;
 
-        public OnMoveInput(float verticalInput, float horizontalInput)
+        public OnMoveInput(float verticalInput, float horizontalInput, bool isGrounded)
         {
             this.verticalInput = verticalInput;
             this.horizontalInput = horizontalInput;
+            this.isGrounded = isGrounded;
         }
     }
 }
