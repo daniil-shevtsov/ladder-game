@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     public Camera cc;
+    public Transform cameraHolder;
 
     public float climbingSpeed = 3;
     public float dragForceAmount = 500;
@@ -103,6 +104,7 @@ public class Player : MonoBehaviour
         }
 
         Move();
+        Rotate();
     }
 
     void Move() {
@@ -112,6 +114,16 @@ public class Player : MonoBehaviour
         var movement = playerSystem.onMoveInput(horizontalMove, verticalMove, characterController.isGrounded);
 
         characterController.Move(3 * Time.deltaTime * movement);
+    }
+
+    void Rotate() {
+        float horizontalRotation = Input.GetAxis("Mouse X");
+        float verticalRotation = Input.GetAxis("Mouse Y");
+
+        var rotationState = playerSystem.onRotateInput(horizontalRotation, verticalRotation);
+
+        transform.Rotate(rotationState.bodyRotation.x, rotationState.bodyRotation.y, rotationState.bodyRotation.z);
+        cameraHolder.Rotate(rotationState.cameraRotation.x, rotationState.cameraRotation.y, rotationState.cameraRotation.z);
     }
 
      void OnTriggerEnter(Collider collision)

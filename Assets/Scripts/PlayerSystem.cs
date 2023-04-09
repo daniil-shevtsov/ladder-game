@@ -38,11 +38,12 @@ public class PlayerSystem : MonoBehaviour
 
     public RotationState onRotateInput(
         float horizontalInput,
-        float verticalInput
+        float verticalInput,
+        float mouseSensitivity = 1f
     ) {
         return new RotationState(
-            Vector3.zero,
-            new Vector3(0f, horizontalInput, 0f)
+            new Vector3(verticalInput * mouseSensitivity, 0f, 0f),
+            new Vector3(0f, horizontalInput * mouseSensitivity, 0f)
         );
     }
 }

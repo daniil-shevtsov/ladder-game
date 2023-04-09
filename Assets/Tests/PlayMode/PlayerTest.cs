@@ -73,12 +73,35 @@ public class PlayerTest : MonoBehaviour
          yield return new WaitForSeconds(0.1f);
     }
 
-        [UnityTest]
-    public IEnumerator ShouldRotateWhenHorizontalInput()
+    [UnityTest]
+    public IEnumerator ShouldRotateBodyWhenHorizontalInput()
     {
         var rotationState = playerSystem.onRotateInput(1f, 0f);
         Assert.AreEqual(new Vector3(0f, 1f, 0f), rotationState.bodyRotation);
          yield return new WaitForSeconds(0.1f);
     }
 
+    [UnityTest]
+    public IEnumerator ShouldRotateCameraWhenVerticalInput()
+    {
+        var rotationState = playerSystem.onRotateInput(0f, 1f);
+        Assert.AreEqual(new Vector3(1f, 0f, 0f), rotationState.cameraRotation);
+         yield return new WaitForSeconds(0.1f);
+    }
+
+    [UnityTest]
+    public IEnumerator ShouldApplyMouseSensitivityToBodyRotation()
+    {
+        var rotationState = playerSystem.onRotateInput(1f, 0f, 2f);
+        Assert.AreEqual(new Vector3(0f, 2f, 0f), rotationState.bodyRotation);
+        yield return new WaitForSeconds(0.1f);
+    }
+
+    [UnityTest]
+    public IEnumerator ShouldApplyMouseSensitivityToCameraRotation()
+    {
+        var rotationState = playerSystem.onRotateInput(0f, 1f, 2f);
+        Assert.AreEqual(new Vector3(2f, 0f, 0f), rotationState.cameraRotation);
+        yield return new WaitForSeconds(0.1f);
+    }
 }

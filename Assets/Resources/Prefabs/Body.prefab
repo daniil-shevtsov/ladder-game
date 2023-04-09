@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cc: {fileID: 0}
+  cameraHolder: {fileID: 3603878430199671387}
   climbingSpeed: 3
   dragForceAmount: 500
   newGrabSystem: 1
@@ -214,6 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e83ce7388d2de1429e1f91548bab92e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isGravityEnabled: 1
 --- !u!1 &3603878430979232975
 GameObject:
   m_ObjectHideFlags: 0
