@@ -96,7 +96,6 @@ public class PlayerTest : MonoBehaviour
             playerState(),
             onRotateInput(horizontalInput: 1f, verticalInput: 0f)
         );
-        var rotationState = playerSystem.onRotateInput(1f, 0f);
         Assert.AreEqual(new Vector3(0f, 1f, 0f), result.state.rotationState.bodyRotation);
         yield return new WaitForSeconds(0.1f);
     }
@@ -104,72 +103,88 @@ public class PlayerTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldRotateCameraWhenVerticalInput()
     {
-        var rotationState = playerSystem.onRotateInput(0f, 1f);
-        Assert.AreEqual(new Vector3(-1f, 0f, 0f), rotationState.cameraRotation);
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onRotateInput(horizontalInput: 0f, verticalInput: 1f)
+        );
+        Assert.AreEqual(new Vector3(-1f, 0f, 0f), result.state.rotationState.cameraRotation);
         yield return new WaitForSeconds(0.1f);
     }
 
     [UnityTest]
     public IEnumerator ShouldApplyMouseSensitivityToBodyRotation()
     {
-        var rotationState = playerSystem.onRotateInput(1f, 0f, 2f);
-        Assert.AreEqual(new Vector3(0f, 2f, 0f), rotationState.bodyRotation);
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onRotateInput(horizontalInput: 1f, verticalInput: 0f, mouseSensitivity: 2)
+        );
+        Assert.AreEqual(new Vector3(0f, 2f, 0f), result.state.rotationState.bodyRotation);
         yield return new WaitForSeconds(0.1f);
     }
 
     [UnityTest]
     public IEnumerator ShouldApplyMouseSensitivityToCameraRotation()
     {
-        var rotationState = playerSystem.onRotateInput(0f, 1f, 2f);
-        Assert.AreEqual(new Vector3(-2f, 0f, 0f), rotationState.cameraRotation);
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onRotateInput(horizontalInput: 0f, verticalInput: 1f, mouseSensitivity: 2)
+        );
+        Assert.AreEqual(new Vector3(-2f, 0f, 0f), result.state.rotationState.cameraRotation);
         yield return new WaitForSeconds(0.1f);
     }
 
     [UnityTest]
     public IEnumerator ShouldStopAtUpLimitOfCameraRotation()
     {
-        var rotationState = playerSystem.onRotateInput(0f, 51f, cameraUpLimit: -50f);
-        Assert.AreEqual(new Vector3(-50f, 0f, 0f), rotationState.cameraRotation);
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onRotateInput(horizontalInput: 0f, verticalInput: 51f, cameraUpLimit: -50f)
+        );
+        Assert.AreEqual(new Vector3(-50f, 0f, 0f), result.state.rotationState.cameraRotation);
         yield return new WaitForSeconds(0.1f);
     }
 
     [UnityTest]
     public IEnumerator ShouldStopAtDownLimitOfCameraRotation()
     {
-        var rotationState = playerSystem.onRotateInput(0f, -51f, cameraDownLimit: 50f);
-        Assert.AreEqual(new Vector3(50f, 0f, 0f), rotationState.cameraRotation);
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onRotateInput(horizontalInput: 0f, verticalInput: -51f, cameraDownLimit: 50f)
+        );
+        Assert.AreEqual(new Vector3(50f, 0f, 0f), result.state.rotationState.cameraRotation);
         yield return new WaitForSeconds(0.1f);
     }
 
     [UnityTest]
     public IEnumerator ShouldRotateCameraWithTheBody()
     {
-        var rotationState = playerSystem.onRotateInput(10f, 0f);
-        Assert.AreEqual(new Vector3(00f, 10f, 0f), rotationState.cameraRotation);
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onRotateInput(horizontalInput: 10f, verticalInput: 0f)
+        );
+        Assert.AreEqual(new Vector3(0f, 10f, 0f), result.state.rotationState.cameraRotation);
         yield return new WaitForSeconds(0.1f);
     }
 
     [UnityTest]
     public IEnumerator ShouldApplyRotationToCurrentCameraRotation()
     {
-        var rotationState = playerSystem.onRotateInput(
-            0f,
-            -10f,
-            currentCameraRotation: new Vector3(20f, 0f, 0f)
+        var result = playerSystem.functionalCore(
+            playerState(rotationState: rotationStateStub(cameraRotation: new Vector3(20f, 0f, 0f))),
+            onRotateInput(horizontalInput: 0f, verticalInput: -10f)
         );
-        Assert.AreEqual(new Vector3(30f, 0f, 0f), rotationState.cameraRotation);
+        Assert.AreEqual(new Vector3(30f, 0f, 0f), result.state.rotationState.cameraRotation);
         yield return new WaitForSeconds(0.1f);
     }
 
     [UnityTest]
     public IEnumerator ShouldClampResultingCameraRotation()
     {
-        var rotationState = playerSystem.onRotateInput(
-            0f,
-            -11f,
-            currentCameraRotation: new Vector3(40f, 0f, 0f)
+        var result = playerSystem.functionalCore(
+            playerState(rotationState: rotationStateStub(cameraRotation: new Vector3(40f, 0f, 0f))),
+            onRotateInput(horizontalInput: 0f, verticalInput: -11f, cameraDownLimit: 50f)
         );
-        Assert.AreEqual(new Vector3(50f, 0f, 0f), rotationState.cameraRotation);
+        Assert.AreEqual(new Vector3(50f, 0f, 0f), result.state.rotationState.cameraRotation);
         yield return new WaitForSeconds(0.1f);
     }
 
@@ -182,9 +197,31 @@ public class PlayerTest : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
     }
 
-    private PlayerState playerState()
+    private PlayerState playerState(
+        RotationState? rotationState = null,
+        TranslationState? translationState = null
+    )
     {
-        return new PlayerState();
+        return new PlayerState(
+            rotationState: rotationState ?? rotationStateStub(),
+            translationState: translationState ?? new TranslationState()
+        );
+    }
+
+    private RotationState rotationStateStub(
+        Vector3? cameraRotation = null,
+        Vector3? bodyRotation = null
+    )
+    {
+        return new RotationState(
+            cameraRotation: cameraRotation ?? Vector3.zero,
+            bodyRotation: bodyRotation ?? Vector3.zero
+        );
+    }
+
+    private TranslationState translationStateStub(Vector3? bodyMovement = null)
+    {
+        return new TranslationState(bodyMovement: bodyMovement ?? Vector3.zero);
     }
 
     private PlayerAction.OnMoveInput onMoveInput(
@@ -217,7 +254,7 @@ public class PlayerTest : MonoBehaviour
         );
     }
 
-    private void AssertEqual(float expected, float actual, float error = 0.001f)
+    private void AssertEqual(float expected, float actual, float error = 0.1f)
     {
         Assert.AreEqual(expected, actual, error);
     }

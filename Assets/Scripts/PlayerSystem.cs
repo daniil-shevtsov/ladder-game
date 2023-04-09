@@ -12,7 +12,7 @@ public class PlayerSystem : MonoBehaviour
     // Update is called once per frame
     void Update() { }
 
-    public Vector3 onMoveInput(float horizontalInput, float verticalInput, bool isGrounded = true)
+    private Vector3 onMoveInput(float horizontalInput, float verticalInput, bool isGrounded = true)
     {
         //return new Vector3(horizontal,0f,vertical);
         var forwardDirection = transform.forward * verticalInput;
@@ -64,7 +64,7 @@ public class PlayerSystem : MonoBehaviour
         };
     }
 
-    public RotationState onRotateInput(
+    private RotationState onRotateInput(
         float horizontalInput,
         float verticalInput,
         float mouseSensitivity = 1f,

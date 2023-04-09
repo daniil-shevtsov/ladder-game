@@ -114,21 +114,25 @@ public class Player : MonoBehaviour
         Rotate();
     }
 
+    void update(PlayerAction action)
+    {
+        var result = playerSystem.functionalCore(getCurrentState(), action);
+
+        applyNewState(result.state);
+    }
+
     void Move()
     {
         float horizontalMove = Input.GetAxis("Horizontal");
         float verticalMove = Input.GetAxis("Vertical");
 
-        var result = playerSystem.functionalCore(
-            new global::PlayerState(),
-            new PlayerAction.OnMoveInput(
+        update(
+            action: new PlayerAction.OnMoveInput(
                 horizontalInput: horizontalMove,
                 verticalInput: verticalMove,
                 isGrounded: characterController.isGrounded
             )
         );
-
-        characterController.Move(3 * Time.deltaTime * result.state.translationState.bodyMovement);
     }
 
     void Rotate()
@@ -136,15 +140,33 @@ public class Player : MonoBehaviour
         float horizontalRotation = Input.GetAxis("Mouse X");
         float verticalRotation = Input.GetAxis("Mouse Y");
 
-        var rotationState = playerSystem.onRotateInput(
-            horizontalRotation,
-            verticalRotation,
-            mouseSensitivity: 1f,
-            cameraUpLimit: -50f,
-            cameraDownLimit: 50f,
-            currentCameraRotation: cameraHolder.eulerAngles
+        update(
+            action: new PlayerAction.onRotateInput(
+                horizontalInput: horizontalRotation,
+                verticalInput: verticalRotation,
+                mouseSensitivity: 1f,
+                cameraUpLimit: -50f,
+                cameraDownLimit: 50f
+            )
         );
+    }
 
+    global::PlayerState getCurrentState()
+    {
+        return new global::PlayerState(
+            rotationState: new RotationState(
+                cameraRotation: cameraHolder.eulerAngles,
+                bodyRotation: Vector3.zero
+            ),
+            translationState: new TranslationState(bodyMovement: Vector3.zero)
+        );
+    }
+
+    void applyNewState(global::PlayerState state)
+    {
+        characterController.Move(3 * Time.deltaTime * state.translationState.bodyMovement);
+
+        var rotationState = state.rotationState;
         transform.Rotate(
             rotationState.bodyRotation.x,
             rotationState.bodyRotation.y,
