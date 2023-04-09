@@ -65,4 +65,20 @@ public class PlayerTest : MonoBehaviour
          yield return new WaitForSeconds(0.1f);
     }
 
+    [UnityTest]
+    public IEnumerator ShouldHasZeroRotationWithZeroInput()
+    {
+        var rotationState = playerSystem.onRotateInput(0f, 0f);
+        Assert.AreEqual(Vector3.zero, rotationState.bodyRotation);
+         yield return new WaitForSeconds(0.1f);
+    }
+
+        [UnityTest]
+    public IEnumerator ShouldRotateWhenHorizontalInput()
+    {
+        var rotationState = playerSystem.onRotateInput(1f, 0f);
+        Assert.AreEqual(new Vector3(0f, 1f, 0f), rotationState.bodyRotation);
+         yield return new WaitForSeconds(0.1f);
+    }
+
 }

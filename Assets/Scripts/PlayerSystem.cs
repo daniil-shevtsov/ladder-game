@@ -35,4 +35,27 @@ public class PlayerSystem : MonoBehaviour
 
         return  forwardDirection + rightDirection + topDirection;
     }
+
+    public RotationState onRotateInput(
+        float horizontalInput,
+        float verticalInput
+    ) {
+        return new RotationState(
+            Vector3.zero,
+            new Vector3(0f, horizontalInput, 0f)
+        );
+    }
+}
+
+public struct RotationState {
+    public Vector3 cameraRotation;
+    public Vector3 bodyRotation;
+
+    public RotationState(
+        Vector3 cameraRotation,
+        Vector3 bodyRotation
+    ) {
+        this.cameraRotation = cameraRotation;
+        this.bodyRotation = bodyRotation;
+    }
 }
