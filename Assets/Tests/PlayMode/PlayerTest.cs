@@ -81,16 +81,23 @@ public class PlayerTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldHasZeroRotationWithZeroInput()
     {
-        var rotationState = playerSystem.onRotateInput(0f, 0f);
-        Assert.AreEqual(Vector3.zero, rotationState.bodyRotation);
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onRotateInput(horizontalInput: 0f, verticalInput: 0f)
+        );
+        Assert.AreEqual(Vector3.zero, result.state.rotationState.bodyRotation);
         yield return new WaitForSeconds(0.1f);
     }
 
     [UnityTest]
     public IEnumerator ShouldRotateBodyWhenHorizontalInput()
     {
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onRotateInput(horizontalInput: 1f, verticalInput: 0f)
+        );
         var rotationState = playerSystem.onRotateInput(1f, 0f);
-        Assert.AreEqual(new Vector3(0f, 1f, 0f), rotationState.bodyRotation);
+        Assert.AreEqual(new Vector3(0f, 1f, 0f), result.state.rotationState.bodyRotation);
         yield return new WaitForSeconds(0.1f);
     }
 
@@ -190,6 +197,23 @@ public class PlayerTest : MonoBehaviour
             horizontalInput: horizontalInput,
             verticalInput: verticalInput,
             isGrounded: isGrounded
+        );
+    }
+
+    private PlayerAction.onRotateInput onRotateInput(
+        float horizontalInput = 0f,
+        float verticalInput = 0f,
+        float mouseSensitivity = 1f,
+        float cameraUpLimit = -360f,
+        float cameraDownLimit = 360f
+    )
+    {
+        return new PlayerAction.onRotateInput(
+            horizontalInput: horizontalInput,
+            verticalInput: verticalInput,
+            mouseSensitivity: mouseSensitivity,
+            cameraDownLimit: cameraDownLimit,
+            cameraUpLimit: cameraUpLimit
         );
     }
 

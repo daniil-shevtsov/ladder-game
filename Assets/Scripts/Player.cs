@@ -127,11 +127,6 @@ public class Player : MonoBehaviour
                 isGrounded: characterController.isGrounded
             )
         );
-        var movement = playerSystem.onMoveInput(
-            horizontalMove,
-            verticalMove,
-            characterController.isGrounded
-        );
 
         characterController.Move(3 * Time.deltaTime * result.state.translationState.bodyMovement);
     }

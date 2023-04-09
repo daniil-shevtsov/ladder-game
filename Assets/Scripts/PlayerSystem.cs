@@ -46,6 +46,20 @@ public class PlayerSystem : MonoBehaviour
                     ),
                     null
                 ),
+            PlayerAction.onRotateInput a
+                => new FunctionalCoreResult(
+                    state.copy(
+                        rotationState: onRotateInput(
+                            a.horizontalInput,
+                            a.verticalInput,
+                            a.mouseSensitivity,
+                            a.cameraUpLimit,
+                            a.cameraDownLimit,
+                            state.rotationState.cameraRotation
+                        )
+                    ),
+                    null
+                ),
             _ => new FunctionalCoreResult(state, null)
         };
     }
@@ -145,6 +159,30 @@ public interface PlayerAction
             this.verticalInput = verticalInput;
             this.horizontalInput = horizontalInput;
             this.isGrounded = isGrounded;
+        }
+    }
+
+    struct onRotateInput : PlayerAction
+    {
+        public float horizontalInput;
+        public float verticalInput;
+        public float mouseSensitivity;
+        public float cameraUpLimit;
+        public float cameraDownLimit;
+
+        public onRotateInput(
+            float horizontalInput,
+            float verticalInput,
+            float mouseSensitivity,
+            float cameraUpLimit,
+            float cameraDownLimit
+        )
+        {
+            this.horizontalInput = horizontalInput;
+            this.verticalInput = verticalInput;
+            this.mouseSensitivity = mouseSensitivity;
+            this.cameraUpLimit = cameraUpLimit;
+            this.cameraDownLimit = cameraDownLimit;
         }
     }
 }
