@@ -151,6 +151,15 @@ public class PlayerTest : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
     }
 
+    [UnityTest]
+    public IEnumerator ShouldCreateInitialState()
+    {
+        var initialState = new PlayerState();
+        var result = playerSystem.functionalCore(initialState, new PlayerAction.Init());
+        Assert.AreEqual(initialState, result.state);
+        yield return new WaitForSeconds(0.1f);
+    }
+
     private void AssertEqual(float expected, float actual, float error = 0.001f)
     {
         Assert.AreEqual(expected, actual, error);

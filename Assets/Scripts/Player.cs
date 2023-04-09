@@ -147,13 +147,6 @@ public class Player : MonoBehaviour
             rotationState.bodyRotation.y,
             rotationState.bodyRotation.z
         );
-        //cameraHolder.Rotate(rotationState.cameraRotation.x, rotationState.cameraRotation.y, rotationState.cameraRotation.z);
-        if (Mathf.Abs(cameraHolder.eulerAngles.x - rotationState.cameraRotation.x) > 10)
-        {
-            Debug.Log("New camera rotation from to");
-            Debug.Log(cameraHolder.eulerAngles);
-            Debug.Log(rotationState.cameraRotation);
-        }
 
         cameraHolder.eulerAngles = rotationState.cameraRotation;
     }

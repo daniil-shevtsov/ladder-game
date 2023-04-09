@@ -28,6 +28,11 @@ public class PlayerSystem : MonoBehaviour
         return forwardDirection + rightDirection + topDirection;
     }
 
+    public FunctionalCoreResult functionalCore(PlayerState state, PlayerAction action)
+    {
+        return new FunctionalCoreResult(state, null);
+    }
+
     public RotationState onRotateInput(
         float horizontalInput,
         float verticalInput,
@@ -72,5 +77,34 @@ public struct RotationState
     {
         this.cameraRotation = cameraRotation;
         this.bodyRotation = bodyRotation;
+    }
+}
+
+public struct PlayerState
+{
+    RotationState rotationState;
+
+    public PlayerState(RotationState rotationState)
+    {
+        this.rotationState = rotationState;
+    }
+}
+
+public interface PlayerAction
+{
+    struct Init : PlayerAction { };
+}
+
+public interface PlayerEvent { }
+
+public struct FunctionalCoreResult
+{
+    public PlayerState state;
+    public PlayerEvent? playerEvent;
+
+    public FunctionalCoreResult(PlayerState state, PlayerEvent? playerEvent)
+    {
+        this.state = state;
+        this.playerEvent = playerEvent;
     }
 }
