@@ -39,10 +39,19 @@ public class PlayerSystem : MonoBehaviour
     public RotationState onRotateInput(
         float horizontalInput,
         float verticalInput,
-        float mouseSensitivity = 1f
+        float mouseSensitivity = 1f,
+        float cameraUpLimit = -50f,
+        float cameraDownLimit = 50f,
+        Vector3? currentCameraRotation = null
     ) {
+        if(currentCameraRotation == null) {
+            currentCameraRotation = Vector3.zero;
+        }
+
+        var clampedCameraRotation = Mathf.Clamp(-verticalInput * mouseSensitivity, cameraUpLimit, cameraDownLimit);
+
         return new RotationState(
-            new Vector3(verticalInput * mouseSensitivity, 0f, 0f),
+            new Vector3(clampedCameraRotation, 0f, 0f),
             new Vector3(0f, horizontalInput * mouseSensitivity, 0f)
         );
     }

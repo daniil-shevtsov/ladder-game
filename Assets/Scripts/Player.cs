@@ -120,10 +120,17 @@ public class Player : MonoBehaviour
         float horizontalRotation = Input.GetAxis("Mouse X");
         float verticalRotation = Input.GetAxis("Mouse Y");
 
-        var rotationState = playerSystem.onRotateInput(horizontalRotation, verticalRotation);
+        var rotationState = playerSystem.onRotateInput(
+            horizontalRotation, 
+            verticalRotation,
+            mouseSensitivity: 1f,
+            cameraUpLimit: -50f,
+            cameraDownLimit: 50f
+            );
 
         transform.Rotate(rotationState.bodyRotation.x, rotationState.bodyRotation.y, rotationState.bodyRotation.z);
-        cameraHolder.Rotate(rotationState.cameraRotation.x, rotationState.cameraRotation.y, rotationState.cameraRotation.z);
+        //cameraHolder.Rotate(rotationState.cameraRotation.x, rotationState.cameraRotation.y, rotationState.cameraRotation.z);
+        cameraHolder.rotation = Quaternion.Euler(rotationState.cameraRotation);
     }
 
      void OnTriggerEnter(Collider collision)
