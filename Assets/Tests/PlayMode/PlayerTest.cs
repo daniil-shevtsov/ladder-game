@@ -6,20 +6,12 @@ using UnityEngine.TestTools;
 
 public class PlayerTest : MonoBehaviour
 {
-    // private ButtonController controller;
-    // private TMPro.TMP_Text result;
-    private GameObject player;
     private PlayerSystem playerSystem;
 
     [OneTimeSetUp]
     public void Setup()
     {
-        player = MonoBehaviour.Instantiate(
-            Resources.Load<GameObject>("Prefabs/Body"),
-            new Vector3(0.0f, 0.0f, 1.0f),
-            Quaternion.identity
-        );
-        playerSystem = player.GetComponent<PlayerSystem>();
+        playerSystem = new PlayerSystem();
     }
 
     // A Test behaves as an ordinary method
@@ -216,9 +208,9 @@ public class PlayerTest : MonoBehaviour
         return new RotationState(
             cameraRotation: cameraRotation ?? Vector3.zero,
             bodyRotation: bodyRotation ?? Vector3.zero,
-            forward: player.transform.forward,
-            right: player.transform.right,
-            up: player.transform.up
+            forward: new Vector3(0f, 0f, 1f),
+            right: new Vector3(1f, 0f, 0f),
+            up: new Vector3(0f, 1f, 0f)
         );
     }
 
