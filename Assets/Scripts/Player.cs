@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     private Ladder nearLadder;
 
     // private MyThirdPersonController characterController;
-    private CharacterController characterController;
+    public CharacterController characterController;
     private PlayerState currentState = PlayerState.Idle;
     private Vector3 originalObjectPosition;
 
@@ -267,30 +267,6 @@ public class Player : MonoBehaviour
         }
         return grabArea.itemsInArea[0];
     }
-
-    // void RotateAsPlayer(GameObject gameObject)
-    // {
-    //     Vector3 handPosition = transform.position + handPositionOffset;
-    //     Quaternion rotation = Quaternion.LookRotation(transform.position - handPosition);
-
-    //     gameObject.transform.rotation = transform.rotation;
-    // }
-
-    // void RotateByMouse(GameObject gameObject)
-    // {
-    //     Vector3 distance = Input.mousePosition - gameObject.transform.position;
-    //     Quaternion rotation = Quaternion.LookRotation(distance, Vector3.up);
-
-    //     Vector3 mouseScreenPosition = new Vector3(
-    //         Input.mousePosition.x,
-    //         Input.mousePosition.y,
-    //         -Camera.main.transform.position.z
-    //     );
-
-    //     Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
-
-    //     gameObject.transform.LookAt(mouseWorldPosition, Vector3.up);
-    // }
 
     void UpdateGrabbedItem()
     {
