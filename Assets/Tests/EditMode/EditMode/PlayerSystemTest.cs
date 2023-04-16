@@ -64,6 +64,16 @@ public class PlayerSystemTest : MonoBehaviour
     }
 
     [Test]
+    public void ShouldNotApplyGravityWhenGravityDisabled()
+    {
+        var result = playerSystem.functionalCore(
+            playerState(isGravityEnabled: false),
+            onMoveInput(horizontalInput: 0f, verticalInput: 0f, isGrounded: false)
+        );
+        AssertEqual(0f, result.state.translationState.bodyMovement.y);
+    }
+
+    [Test]
     public void ShouldHasZeroRotationWithZeroInput()
     {
         var result = playerSystem.functionalCore(
@@ -173,12 +183,14 @@ public class PlayerSystemTest : MonoBehaviour
 
     private PlayerState playerState(
         RotationState? rotationState = null,
-        TranslationState? translationState = null
+        TranslationState? translationState = null,
+        bool? isGravityEnabled = null
     )
     {
         return new PlayerState(
             rotationState: rotationState ?? rotationStateStub(),
-            translationState: translationState ?? new TranslationState()
+            translationState: translationState ?? new TranslationState(),
+            isGravityEnabled: isGravityEnabled ?? true
         );
     }
 

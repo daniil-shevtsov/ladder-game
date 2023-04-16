@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerSystem
 {
-    public bool isGravityEnabled = true;
-
     private Vector3 onMoveInput(PlayerState state, PlayerAction.OnMoveInput action)
     {
         //return new Vector3(horizontal,0f,vertical);
@@ -13,7 +11,7 @@ public class PlayerSystem
         var rightDirection = state.rotationState.right * action.horizontalInput;
 
         var verticalSpeed = 0f;
-        if (isGravityEnabled && !action.isGrounded)
+        if (state.isGravityEnabled && !action.isGrounded)
         {
             verticalSpeed = -9.87f;
         }
@@ -117,21 +115,29 @@ public struct PlayerState
 {
     public RotationState rotationState;
     public TranslationState translationState;
+    public bool isGravityEnabled;
 
-    public PlayerState(RotationState rotationState, TranslationState translationState)
+    public PlayerState(
+        RotationState rotationState,
+        TranslationState translationState,
+        bool isGravityEnabled
+    )
     {
         this.rotationState = rotationState;
         this.translationState = translationState;
+        this.isGravityEnabled = isGravityEnabled;
     }
 
     public PlayerState copy(
         RotationState? rotationState = null,
-        TranslationState? translationState = null
+        TranslationState? translationState = null,
+        bool? isGravityEnabled = null
     )
     {
         return new PlayerState(
             rotationState: rotationState ?? this.rotationState,
-            translationState: translationState ?? this.translationState
+            translationState: translationState ?? this.translationState,
+            isGravityEnabled: isGravityEnabled ?? this.isGravityEnabled
         );
     }
 }

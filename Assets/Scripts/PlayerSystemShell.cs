@@ -8,6 +8,7 @@ public class PlayerSystemShell : MonoBehaviour
     private Transform cameraHolder;
     private CharacterController characterController;
     private PlayerSystem playerSystem;
+    private bool isGravityEnabled = true;
 
     void Awake()
     {
@@ -68,7 +69,8 @@ public class PlayerSystemShell : MonoBehaviour
                 right: player.transform.right,
                 up: player.transform.up
             ),
-            translationState: new TranslationState(bodyMovement: Vector3.zero)
+            translationState: new TranslationState(bodyMovement: Vector3.zero),
+            isGravityEnabled: isGravityEnabled
         );
     }
 
