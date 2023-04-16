@@ -36,43 +36,26 @@ public class PlayerSystem
                 ),
             PlayerAction.onRotateInput a
                 => new FunctionalCoreResult(
-                    state.copy(
-                        rotationState: onRotateInput(
-                            state,
-                            a.horizontalInput,
-                            a.verticalInput,
-                            a.mouseSensitivity,
-                            a.cameraUpLimit,
-                            a.cameraDownLimit,
-                            state.rotationState.cameraRotation
-                        )
-                    ),
+                    state.copy(rotationState: onRotateInput(state, a)),
                     null
                 ),
             _ => new FunctionalCoreResult(state, null)
         };
     }
 
-    private RotationState onRotateInput(
-        PlayerState state,
-        float horizontalInput,
-        float verticalInput,
-        float mouseSensitivity = 1f,
-        float cameraUpLimit = -50f,
-        float cameraDownLimit = 50f,
-        Vector3? currentCameraRotation = null
-    )
+    private RotationState onRotateInput(PlayerState state, PlayerAction.onRotateInput action)
     {
+        var currentCameraRotation = state.rotationState.cameraRotation;
         if (currentCameraRotation == null)
         {
             currentCameraRotation = Vector3.zero;
         }
 
-        var bodyRotation = new Vector3(0f, horizontalInput * mouseSensitivity, 0f);
+        var bodyRotation = new Vector3(0f, action.horizontalInput * action.mouseSensitivity, 0f);
 
         var cameraRotation =
-            currentCameraRotation.Value
-            + new Vector3(-verticalInput * mouseSensitivity, bodyRotation.y, 0f);
+            currentCameraRotation
+            + new Vector3(-action.verticalInput * action.mouseSensitivity, bodyRotation.y, 0f);
 
         if (cameraRotation.x > 180)
         {
@@ -80,7 +63,7 @@ public class PlayerSystem
         }
 
         var clampedCameraRotation = new Vector3(
-            Mathf.Clamp(cameraRotation.x, cameraUpLimit, cameraDownLimit),
+            Mathf.Clamp(cameraRotation.x, action.cameraUpLimit, action.cameraDownLimit),
             cameraRotation.y,
             cameraRotation.z
         );
