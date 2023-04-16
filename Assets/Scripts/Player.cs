@@ -31,8 +31,7 @@ public class Player : MonoBehaviour
 
     private PlayerSystem playerSystem;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         grabArea = GetComponent<GrabArea>();
         characterController = GetComponent<CharacterController>();
@@ -41,6 +40,9 @@ public class Player : MonoBehaviour
 
         handPositionOffset = new Vector3(1.5f, 1.5f, 1.5f);
     }
+
+    // Start is called before the first frame update
+    void Start() { }
 
     // Update is called once per frame
     void Update()
