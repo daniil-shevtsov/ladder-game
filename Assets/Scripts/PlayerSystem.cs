@@ -15,15 +15,15 @@ public class PlayerSystem : MonoBehaviour
     private Vector3 onMoveInput(PlayerState state, PlayerAction.OnMoveInput action)
     {
         //return new Vector3(horizontal,0f,vertical);
-        var forwardDirection = transform.forward * action.verticalInput;
-        var rightDirection = transform.right * action.horizontalInput;
+        var forwardDirection = state.rotationState.forward * action.verticalInput;
+        var rightDirection = state.rotationState.right * action.horizontalInput;
 
         var verticalSpeed = 0f;
         if (isGravityEnabled && !action.isGrounded)
         {
             verticalSpeed = -9.87f;
         }
-        var topDirection = transform.up * verticalSpeed;
+        var topDirection = state.rotationState.up * verticalSpeed;
 
         return forwardDirection + rightDirection + topDirection;
     }
