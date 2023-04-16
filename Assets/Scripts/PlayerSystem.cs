@@ -12,14 +12,14 @@ public class PlayerSystem : MonoBehaviour
     // Update is called once per frame
     void Update() { }
 
-    private Vector3 onMoveInput(float horizontalInput, float verticalInput, bool isGrounded = true)
+    private Vector3 onMoveInput(PlayerState state, PlayerAction.OnMoveInput action)
     {
         //return new Vector3(horizontal,0f,vertical);
-        var forwardDirection = transform.forward * verticalInput;
-        var rightDirection = transform.right * horizontalInput;
+        var forwardDirection = transform.forward * action.verticalInput;
+        var rightDirection = transform.right * action.horizontalInput;
 
         var verticalSpeed = 0f;
-        if (isGravityEnabled && !isGrounded)
+        if (isGravityEnabled && !action.isGrounded)
         {
             verticalSpeed = -9.87f;
         }
@@ -36,13 +36,7 @@ public class PlayerSystem : MonoBehaviour
             PlayerAction.OnMoveInput a
                 => new FunctionalCoreResult(
                     state.copy(
-                        translationState: new TranslationState(
-                            bodyMovement: onMoveInput(
-                                a.horizontalInput,
-                                a.verticalInput,
-                                a.isGrounded
-                            )
-                        )
+                        translationState: new TranslationState(bodyMovement: onMoveInput(state, a))
                     ),
                     null
                 ),
@@ -50,6 +44,7 @@ public class PlayerSystem : MonoBehaviour
                 => new FunctionalCoreResult(
                     state.copy(
                         rotationState: onRotateInput(
+                            state,
                             a.horizontalInput,
                             a.verticalInput,
                             a.mouseSensitivity,
@@ -65,6 +60,7 @@ public class PlayerSystem : MonoBehaviour
     }
 
     private RotationState onRotateInput(
+        PlayerState state,
         float horizontalInput,
         float verticalInput,
         float mouseSensitivity = 1f,
@@ -95,7 +91,13 @@ public class PlayerSystem : MonoBehaviour
             cameraRotation.z
         );
 
-        return new RotationState(clampedCameraRotation, bodyRotation);
+        return new RotationState(
+            clampedCameraRotation,
+            bodyRotation,
+            state.rotationState.forward,
+            state.rotationState.right,
+            state.rotationState.up
+        );
     }
 }
 
@@ -104,10 +106,23 @@ public struct RotationState
     public Vector3 cameraRotation;
     public Vector3 bodyRotation;
 
-    public RotationState(Vector3 cameraRotation, Vector3 bodyRotation)
+    public Vector3 forward;
+    public Vector3 right;
+    public Vector3 up;
+
+    public RotationState(
+        Vector3 cameraRotation,
+        Vector3 bodyRotation,
+        Vector3 forward,
+        Vector3 right,
+        Vector3 up
+    )
     {
         this.cameraRotation = cameraRotation;
         this.bodyRotation = bodyRotation;
+        this.forward = forward;
+        this.right = right;
+        this.up = up;
     }
 }
 

@@ -29,13 +29,10 @@ public class Player : MonoBehaviour
     private PlayerState currentState = PlayerState.Idle;
     private Vector3 originalObjectPosition;
 
-    private PlayerSystem playerSystem;
-
     void Awake()
     {
         grabArea = GetComponent<GrabArea>();
         characterController = GetComponent<CharacterController>();
-        playerSystem = GetComponent<PlayerSystem>();
         //handHinge = GetComponent<HingeJoint>();
 
         handPositionOffset = new Vector3(1.5f, 1.5f, 1.5f);

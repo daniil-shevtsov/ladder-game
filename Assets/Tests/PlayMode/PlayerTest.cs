@@ -215,7 +215,10 @@ public class PlayerTest : MonoBehaviour
     {
         return new RotationState(
             cameraRotation: cameraRotation ?? Vector3.zero,
-            bodyRotation: bodyRotation ?? Vector3.zero
+            bodyRotation: bodyRotation ?? Vector3.zero,
+            forward: player.transform.forward,
+            right: player.transform.right,
+            up: player.transform.up
         );
     }
 

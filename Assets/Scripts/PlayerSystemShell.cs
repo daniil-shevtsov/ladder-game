@@ -9,12 +9,16 @@ public class PlayerSystemShell : MonoBehaviour
     private CharacterController characterController;
     private PlayerSystem playerSystem;
 
+    void Awake()
+    {
+        playerSystem = GetComponent<PlayerSystem>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         cameraHolder = player.cameraHolder;
         characterController = player.characterController;
-        playerSystem = GetComponent<PlayerSystem>();
     }
 
     // Update is called once per frame
@@ -59,10 +63,20 @@ public class PlayerSystemShell : MonoBehaviour
         return new global::PlayerState(
             rotationState: new RotationState(
                 cameraRotation: cameraHolder.eulerAngles,
-                bodyRotation: Vector3.zero
+                bodyRotation: Vector3.zero,
+                forward: player.transform.forward,
+                right: player.transform.right,
+                up: player.transform.up
             ),
             translationState: new TranslationState(bodyMovement: Vector3.zero)
         );
+    }
+
+    void update(PlayerAction action)
+    {
+        var result = playerSystem.functionalCore(getCurrentState(), action);
+
+        applyNewState(result.state);
     }
 
     void applyNewState(global::PlayerState state)
@@ -77,12 +91,5 @@ public class PlayerSystemShell : MonoBehaviour
         );
 
         cameraHolder.eulerAngles = rotationState.cameraRotation;
-    }
-
-    void update(PlayerAction action)
-    {
-        var result = playerSystem.functionalCore(getCurrentState(), action);
-
-        applyNewState(result.state);
     }
 }
