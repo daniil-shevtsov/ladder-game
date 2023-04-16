@@ -31,7 +31,7 @@ public class PlayerTest : MonoBehaviour
             onMoveInput(horizontalInput: 0f, verticalInput: 0f)
         );
         AssertEqual(Vector3.zero, result.state.translationState.bodyMovement);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.0f);
     }
 
     [UnityTest]
@@ -42,7 +42,7 @@ public class PlayerTest : MonoBehaviour
             onMoveInput(horizontalInput: 0f, verticalInput: 1f)
         );
         AssertEqual(1f, result.state.translationState.bodyMovement.z);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.0f);
     }
 
     [UnityTest]
@@ -53,7 +53,7 @@ public class PlayerTest : MonoBehaviour
             onMoveInput(horizontalInput: 1f, verticalInput: 1f)
         );
         AssertEqual(1f, result.state.translationState.bodyMovement.x);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.0f);
     }
 
     [UnityTest]
@@ -64,7 +64,7 @@ public class PlayerTest : MonoBehaviour
             onMoveInput(horizontalInput: 0f, verticalInput: 1f)
         );
         AssertEqual(0f, result.state.translationState.bodyMovement.y);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.0f);
     }
 
     [UnityTest]
@@ -75,7 +75,7 @@ public class PlayerTest : MonoBehaviour
             onMoveInput(horizontalInput: 0f, verticalInput: 0f, isGrounded: false)
         );
         AssertEqual(-9.87f, result.state.translationState.bodyMovement.y);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.0f);
     }
 
     [UnityTest]
@@ -86,7 +86,7 @@ public class PlayerTest : MonoBehaviour
             onRotateInput(horizontalInput: 0f, verticalInput: 0f)
         );
         Assert.AreEqual(Vector3.zero, result.state.rotationState.bodyRotation);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.0f);
     }
 
     [UnityTest]
@@ -97,7 +97,7 @@ public class PlayerTest : MonoBehaviour
             onRotateInput(horizontalInput: 1f, verticalInput: 0f)
         );
         Assert.AreEqual(new Vector3(0f, 1f, 0f), result.state.rotationState.bodyRotation);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.0f);
     }
 
     [UnityTest]
@@ -108,7 +108,7 @@ public class PlayerTest : MonoBehaviour
             onRotateInput(horizontalInput: 0f, verticalInput: 1f)
         );
         Assert.AreEqual(new Vector3(-1f, 0f, 0f), result.state.rotationState.cameraRotation);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.0f);
     }
 
     [UnityTest]
@@ -119,7 +119,7 @@ public class PlayerTest : MonoBehaviour
             onRotateInput(horizontalInput: 1f, verticalInput: 0f, mouseSensitivity: 2)
         );
         Assert.AreEqual(new Vector3(0f, 2f, 0f), result.state.rotationState.bodyRotation);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.0f);
     }
 
     [UnityTest]
@@ -130,7 +130,7 @@ public class PlayerTest : MonoBehaviour
             onRotateInput(horizontalInput: 0f, verticalInput: 1f, mouseSensitivity: 2)
         );
         Assert.AreEqual(new Vector3(-2f, 0f, 0f), result.state.rotationState.cameraRotation);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.0f);
     }
 
     [UnityTest]
@@ -141,7 +141,7 @@ public class PlayerTest : MonoBehaviour
             onRotateInput(horizontalInput: 0f, verticalInput: 51f, cameraUpLimit: -50f)
         );
         Assert.AreEqual(new Vector3(-50f, 0f, 0f), result.state.rotationState.cameraRotation);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.0f);
     }
 
     [UnityTest]
@@ -152,7 +152,7 @@ public class PlayerTest : MonoBehaviour
             onRotateInput(horizontalInput: 0f, verticalInput: -51f, cameraDownLimit: 50f)
         );
         Assert.AreEqual(new Vector3(50f, 0f, 0f), result.state.rotationState.cameraRotation);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.0f);
     }
 
     [UnityTest]
@@ -163,7 +163,7 @@ public class PlayerTest : MonoBehaviour
             onRotateInput(horizontalInput: 10f, verticalInput: 0f)
         );
         Assert.AreEqual(new Vector3(0f, 10f, 0f), result.state.rotationState.cameraRotation);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.0f);
     }
 
     [UnityTest]
@@ -174,7 +174,7 @@ public class PlayerTest : MonoBehaviour
             onRotateInput(horizontalInput: 0f, verticalInput: -10f)
         );
         Assert.AreEqual(new Vector3(30f, 0f, 0f), result.state.rotationState.cameraRotation);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.0f);
     }
 
     [UnityTest]
@@ -185,7 +185,7 @@ public class PlayerTest : MonoBehaviour
             onRotateInput(horizontalInput: 0f, verticalInput: -11f, cameraDownLimit: 50f)
         );
         Assert.AreEqual(new Vector3(50f, 0f, 0f), result.state.rotationState.cameraRotation);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.0f);
     }
 
     [UnityTest]
@@ -194,7 +194,7 @@ public class PlayerTest : MonoBehaviour
         var initialState = playerState();
         var result = playerSystem.functionalCore(initialState, new PlayerAction.Init());
         Assert.AreEqual(initialState, result.state);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.0f);
     }
 
     private PlayerState playerState(
