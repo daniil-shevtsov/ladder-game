@@ -23,6 +23,154 @@ public class PlayerSystemTest : MonoBehaviour
         AssertEqual(Vector3.zero, result.state.translationState.bodyMovement);
     }
 
+    [Test]
+    public void ShouldMoveForwardWhenHasVerticalInput()
+    {
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onMoveInput(horizontalInput: 0f, verticalInput: 1f)
+        );
+        AssertEqual(1f, result.state.translationState.bodyMovement.z);
+    }
+
+    [Test]
+    public void ShouldMoveRightWhenHasHorizontalInput()
+    {
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onMoveInput(horizontalInput: 1f, verticalInput: 1f)
+        );
+        AssertEqual(1f, result.state.translationState.bodyMovement.x);
+    }
+
+    [Test]
+    public void ShouldStayWhenOnGroundInput()
+    {
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onMoveInput(horizontalInput: 0f, verticalInput: 1f)
+        );
+        AssertEqual(0f, result.state.translationState.bodyMovement.y);
+    }
+
+    [Test]
+    public void ShouldApplyGravityInTheAirInput()
+    {
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onMoveInput(horizontalInput: 0f, verticalInput: 0f, isGrounded: false)
+        );
+        AssertEqual(-9.87f, result.state.translationState.bodyMovement.y);
+    }
+
+    [Test]
+    public void ShouldHasZeroRotationWithZeroInput()
+    {
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onRotateInput(horizontalInput: 0f, verticalInput: 0f)
+        );
+        Assert.AreEqual(Vector3.zero, result.state.rotationState.bodyRotation);
+    }
+
+    [Test]
+    public void ShouldRotateBodyWhenHorizontalInput()
+    {
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onRotateInput(horizontalInput: 1f, verticalInput: 0f)
+        );
+        Assert.AreEqual(new Vector3(0f, 1f, 0f), result.state.rotationState.bodyRotation);
+    }
+
+    [Test]
+    public void ShouldRotateCameraWhenVerticalInput()
+    {
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onRotateInput(horizontalInput: 0f, verticalInput: 1f)
+        );
+        Assert.AreEqual(new Vector3(-1f, 0f, 0f), result.state.rotationState.cameraRotation);
+    }
+
+    [Test]
+    public void ShouldApplyMouseSensitivityToBodyRotation()
+    {
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onRotateInput(horizontalInput: 1f, verticalInput: 0f, mouseSensitivity: 2)
+        );
+        Assert.AreEqual(new Vector3(0f, 2f, 0f), result.state.rotationState.bodyRotation);
+    }
+
+    [Test]
+    public void ShouldApplyMouseSensitivityToCameraRotation()
+    {
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onRotateInput(horizontalInput: 0f, verticalInput: 1f, mouseSensitivity: 2)
+        );
+        Assert.AreEqual(new Vector3(-2f, 0f, 0f), result.state.rotationState.cameraRotation);
+    }
+
+    [Test]
+    public void ShouldStopAtUpLimitOfCameraRotation()
+    {
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onRotateInput(horizontalInput: 0f, verticalInput: 51f, cameraUpLimit: -50f)
+        );
+        Assert.AreEqual(new Vector3(-50f, 0f, 0f), result.state.rotationState.cameraRotation);
+    }
+
+    [Test]
+    public void ShouldStopAtDownLimitOfCameraRotation()
+    {
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onRotateInput(horizontalInput: 0f, verticalInput: -51f, cameraDownLimit: 50f)
+        );
+        Assert.AreEqual(new Vector3(50f, 0f, 0f), result.state.rotationState.cameraRotation);
+    }
+
+    [Test]
+    public void ShouldRotateCameraWithTheBody()
+    {
+        var result = playerSystem.functionalCore(
+            playerState(),
+            onRotateInput(horizontalInput: 10f, verticalInput: 0f)
+        );
+        Assert.AreEqual(new Vector3(0f, 10f, 0f), result.state.rotationState.cameraRotation);
+    }
+
+    [Test]
+    public void ShouldApplyRotationToCurrentCameraRotation()
+    {
+        var result = playerSystem.functionalCore(
+            playerState(rotationState: rotationStateStub(cameraRotation: new Vector3(20f, 0f, 0f))),
+            onRotateInput(horizontalInput: 0f, verticalInput: -10f)
+        );
+        Assert.AreEqual(new Vector3(30f, 0f, 0f), result.state.rotationState.cameraRotation);
+    }
+
+    [Test]
+    public void ShouldClampResultingCameraRotation()
+    {
+        var result = playerSystem.functionalCore(
+            playerState(rotationState: rotationStateStub(cameraRotation: new Vector3(40f, 0f, 0f))),
+            onRotateInput(horizontalInput: 0f, verticalInput: -11f, cameraDownLimit: 50f)
+        );
+        Assert.AreEqual(new Vector3(50f, 0f, 0f), result.state.rotationState.cameraRotation);
+    }
+
+    [Test]
+    public void ShouldCreateInitialState()
+    {
+        var initialState = playerState();
+        var result = playerSystem.functionalCore(initialState, new PlayerAction.Init());
+        Assert.AreEqual(initialState, result.state);
+    }
+
     private PlayerState playerState(
         RotationState? rotationState = null,
         TranslationState? translationState = null

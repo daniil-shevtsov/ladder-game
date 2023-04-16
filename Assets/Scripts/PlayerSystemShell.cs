@@ -11,7 +11,7 @@ public class PlayerSystemShell : MonoBehaviour
 
     void Awake()
     {
-        playerSystem = GetComponent<PlayerSystem>();
+        playerSystem = new PlayerSystem();
     }
 
     // Start is called before the first frame update

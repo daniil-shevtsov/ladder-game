@@ -2,15 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSystem : MonoBehaviour
+public class PlayerSystem
 {
     public bool isGravityEnabled = true;
-
-    // Start is called before the first frame update
-    void Start() { }
-
-    // Update is called once per frame
-    void Update() { }
 
     private Vector3 onMoveInput(PlayerState state, PlayerAction.OnMoveInput action)
     {
