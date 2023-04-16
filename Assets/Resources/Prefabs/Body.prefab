@@ -23,7 +23,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3603878430199671386}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.00043633234, y: -0.000000089406974, z: -4.365575e-11, w: 0.99999994}
   m_LocalPosition: {x: 0, y: 0.9, z: -0.39}
   m_LocalScale: {x: 1.7096429, y: 1.9047619, z: 1.629366}
   m_ConstrainProportionsScale: 0
@@ -47,7 +47,6 @@ GameObject:
   - component: {fileID: 3603878430228726749}
   - component: {fileID: 3603878430228726744}
   - component: {fileID: 3603878430228726745}
-  - component: {fileID: 4601914026408063997}
   m_Layer: 8
   m_Name: Body
   m_TagString: Player
@@ -62,7 +61,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3603878430228726743}
-  m_LocalRotation: {x: -0, y: 0.70687264, z: -0, w: 0.70734084}
+  m_LocalRotation: {x: 0, y: 0.70594615, z: 0, w: 0.7082655}
   m_LocalPosition: {x: -0.33700013, y: 1.229, z: 3.5909998}
   m_LocalScale: {x: 0.5625, y: 0.525, z: 0.63615304}
   m_ConstrainProportionsScale: 0
@@ -158,6 +157,7 @@ MonoBehaviour:
   dragForceAmount: 500
   newGrabSystem: 1
   handHinge: {fileID: 3603878431662091759}
+  characterController: {fileID: 3603878430228726749}
 --- !u!143 &3603878430228726749
 CharacterController:
   m_ObjectHideFlags: 0
@@ -203,19 +203,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemsInArea: []
---- !u!114 &4601914026408063997
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3603878430228726743}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e83ce7388d2de1429e1f91548bab92e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isGravityEnabled: 1
 --- !u!1 &3603878430979232975
 GameObject:
   m_ObjectHideFlags: 0
