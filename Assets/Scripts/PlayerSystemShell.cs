@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerSystemShell : MonoBehaviour
 {
     public Player player;
+
+    public InputSystem inputSystem;
     private Transform cameraHolder;
     private CharacterController characterController;
     private PlayerSystem playerSystem;
@@ -20,44 +22,79 @@ public class PlayerSystemShell : MonoBehaviour
     {
         cameraHolder = player.cameraHolder;
         characterController = player.characterController;
+
+        setInputSystem(GetComponent<RealInputSystem>());
+    }
+
+    public void setInputSystem(InputSystem inputSystem)
+    {
+        if (this.inputSystem != null)
+        {
+            this.inputSystem.unsubscribe();
+        }
+        this.inputSystem = inputSystem;
+        this.inputSystem.subscribe(handleInputActions);
+    }
+
+    void handleInputActions(InputAction action)
+    {
+        switch (action)
+        {
+            case InputAction.Climb a:
+                climb(a);
+                break;
+            case InputAction.Grab a:
+                grab(a);
+                break;
+            case InputAction.Move a:
+                move(a);
+                break;
+            case InputAction.Rotate a:
+                rotate(a);
+                break;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        Move();
-        Rotate();
+        // Move();
+        //Rotate();
     }
 
-    void Move()
+    void move(InputAction.Move action)
     {
-        float horizontalMove = Input.GetAxis("Horizontal");
-        float verticalMove = Input.GetAxis("Vertical");
+        // float horizontalMove = Input.GetAxis("Horizontal");
+        // float verticalMove = Input.GetAxis("Vertical");
 
         update(
             action: new PlayerAction.OnMoveInput(
-                horizontalInput: horizontalMove,
-                verticalInput: verticalMove,
+                horizontalInput: action.horizontal,
+                verticalInput: action.vertical,
                 isGrounded: characterController.isGrounded
             )
         );
     }
 
-    void Rotate()
+    void rotate(InputAction.Rotate action)
     {
-        float horizontalRotation = Input.GetAxis("Mouse X");
-        float verticalRotation = Input.GetAxis("Mouse Y");
+        // float horizontalRotation = Input.GetAxis("Mouse X");
+        // float verticalRotation = Input.GetAxis("Mouse Y");
 
         update(
             action: new PlayerAction.onRotateInput(
-                horizontalInput: horizontalRotation,
-                verticalInput: verticalRotation,
+                horizontalInput: action.horizontal,
+                verticalInput: action.vertical,
                 mouseSensitivity: 1f,
                 cameraUpLimit: -50f,
                 cameraDownLimit: 50f
             )
         );
     }
+
+    void climb(InputAction.Climb action) { }
+
+    void grab(InputAction.Grab action) { }
 
     global::PlayerState getCurrentState()
     {
